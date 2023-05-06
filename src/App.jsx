@@ -6,7 +6,7 @@ function App() {
   const [role, setRole] = useState("dev");
   const showEmployees = true;
   return (
-    <div className="App bg-red-300">
+    <div className="App bg-red-600">
       {showEmployees ? (
         <>
           <input
