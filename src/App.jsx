@@ -1,12 +1,51 @@
 import "../src/index.css";
 import Employee from "./compontents/Employee";
 import { useState } from "react";
+import TodoApp from "./pages/TodoApp";
 
 function App() {
   const [role, setRole] = useState("dev");
+  const [employees, setEmployees] = useState([
+    {
+      name: "Tristan",
+      role: "Server / Bartender",
+      tier: "Tier 4",
+      img: "https://images.pexels.com/photos/4926674/pexels-photo-4926674.jpeg",
+    },
+    {
+      name: "Johnathan",
+      role: "Server / Bartender",
+      tier: "Tier 4",
+      img: "https://images.pexels.com/photos/4926672/pexels-photo-4926672.jpeg",
+    },
+    {
+      name: "James",
+      role: "Server",
+      tier: "Tier 5",
+      img: "https://images.pexels.com/photos/4926673/pexels-photo-4926673.jpeg",
+    },
+    {
+      name: "Joe",
+      role: "Supervisor / Server",
+      tier: "Tier 5",
+      img: "https://images.pexels.com/photos/4926675/pexels-photo-4926675.jpeg",
+    },
+    {
+      name: "Zach",
+      role: "Supervisor / Bartender",
+      tier: "Tier 5",
+      img: "https://images.pexels.com/photos/4926676/pexels-photo-4926676.jpeg",
+    },
+    {
+      name: "Alex",
+      role: "Server",
+      tier: "Tier 3",
+      img: "https://images.pexels.com/photos/4926677/pexels-photo-4926677.jpeg",
+    },
+  ]);
   const showEmployees = true;
   return (
-    <div className="App bg-red-600">
+    <div className="App">
       {showEmployees ? (
         <>
           <input
@@ -16,9 +55,22 @@ function App() {
               setRole(e.target.value);
             }}
           />
-          <Employee name="Caleb" role="Intern" />
-          <Employee name="Abby" role={role} />
-          <Employee name="John" />
+          <div className="flex flex-wrap justify-center p-4 bg-[#f6b42c]">
+            {employees.map((employee) => {
+              console.log(employee);
+              return (
+                <Employee
+                  name={employee.name}
+                  role={employee.role}
+                  tier={employee.tier}
+                  img={employee.img}
+                />
+              );
+            })}
+          </div>
+          <div>
+            <TodoApp />
+          </div>
         </>
       ) : (
         <p>You cannot see the employees</p>
