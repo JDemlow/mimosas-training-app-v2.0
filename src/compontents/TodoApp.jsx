@@ -16,7 +16,7 @@ const style = {
 };
 
 function TodoApp() {
-  const [todos, setTodos] = useState(["Learn React", "Grind Leetcode"]);
+  const [todos, setTodos] = useState([]);
 
   // Create todo
   // Read todo from firebase

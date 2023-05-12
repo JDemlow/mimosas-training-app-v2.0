@@ -6,7 +6,7 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBplM-ShTcNo1R_pfvHBlsekxwURriKesE",
+  apiKey: "AIzaSyBplM-ShTcNo1R_pfvHBlsekxwURriKes",
   authDomain: "mimosas-training-app.firebaseapp.com",
   projectId: "mimosas-training-app",
   storageBucket: "mimosas-training-app.appspot.com",

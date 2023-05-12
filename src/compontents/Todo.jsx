@@ -15,7 +15,12 @@ const todo = ({ todo }) => {
     <li className={style.li}>
       <div className={style.row}>
         <input type="checkbox" />
-        <p className={style.text}>{todo}</p>
+        <p
+          onClick={() => toggleComplete(todo)}
+          className={todo.completed ? style.textComplete : style.text}
+        >
+          {todo.text}
+        </p>
       </div>
       <button>{<FaRegTrashAlt />}</button>
     </li>
