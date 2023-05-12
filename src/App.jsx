@@ -1,7 +1,7 @@
 import "../src/index.css";
 import Employee from "./compontents/Employee";
 import { useState } from "react";
-import TodoApp from "./pages/TodoApp";
+import TodoApp from "./compontents/TodoApp";
 
 function App() {
   const [role, setRole] = useState("dev");
