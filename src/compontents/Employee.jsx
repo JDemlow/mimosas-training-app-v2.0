@@ -1,20 +1,21 @@
+import EditEmployee from "./EditEmployee";
+
 function Employee(props) {
   return (
-    <div class="m-2 py-8 px-8 max-w-sm bg-white rounded-xl shadow-lg space-y-2 sm:py-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-6">
+    <div className="m-2 max-w-sm space-y-2 rounded-xl bg-white px-8 py-8 shadow-lg sm:flex sm:items-center sm:space-x-6 sm:space-y-0 sm:py-4">
       <img
-        class=" object-cover rounded-full h-[100px] w-[100px] block mx-auto h-24 rounded-full sm:mx-0 sm:shrink-0"
+        className=" mx-auto block h-24 h-[100px] w-[100px] rounded-full rounded-full object-cover sm:mx-0 sm:shrink-0"
         src={props.img}
         alt="Woman's Face"
       />
-      <div class="text-center space-y-2 sm:text-left">
-        <div class="space-y-0.5">
-          <p class="text-lg text-black font-semibold">{props.name}</p>
-          <p class="text-slate-500 font-medium">{props.role}</p>
-          <p class="text-slate-500 font-medium">{props.tier}</p>
+      <div className="space-y-2 text-center sm:text-left">
+        <div className="space-y-0.5">
+          <p className="text-lg font-semibold text-black">{props.name}</p>
+          <p className="font-medium text-slate-500">{props.role}</p>
+          <p className="font-medium text-slate-500">{props.tier}</p>
         </div>
-        <button class="px-4 py-1 text-sm text-[#d69c28] font-semibold rounded-full border border-[#f6b42c] hover:text-white hover:bg-[#fe642a] hover:border-transparent focus:outline-none focus:ring-2 focus:ring-[#f6b42c] focus:ring-offset-2">
-          View Employee
-        </button>
+
+        <EditEmployee />
       </div>
     </div>
   );

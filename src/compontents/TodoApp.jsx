@@ -14,7 +14,7 @@ import {
 } from "firebase/firestore";
 
 const style = {
-  bg: `h-screen w-screen p-4 bg-gradient-to-r from-[#2F80ED] to-[#1C85E0]`,
+  bg: `h-screen w-screen p-4 bg-gradient-to-r from-[#d69c28] to-[#fe642a]`,
   container: `bg-slate-100 max-w-[500px] w-full m-auto rounded-md shadow-xl p-4`,
   heading: `text-3xl fonnt-bold text-center text-gray-800 p-2`,
   form: `flex justify-between`,
@@ -22,6 +22,10 @@ const style = {
   button: `border p-4 ml-2 bg-purple-500 text-slate-100`,
   count: `text-center p-2`,
 };
+
+//#f6b42c
+//#fe642a
+//#d69c28
 
 function TodoApp() {
   const [todos, setTodos] = useState([]);
@@ -109,5 +113,3 @@ function TodoApp() {
 }
 
 export default TodoApp;
-
-//aaaaa

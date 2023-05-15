@@ -2,6 +2,7 @@ import "../src/index.css";
 import Employee from "./compontents/Employee";
 import { useState } from "react";
 import TodoApp from "./compontents/TodoApp";
+import { v4 as uuidv4 } from "uuid";
 
 function App() {
   const [role, setRole] = useState("dev");
@@ -55,11 +56,12 @@ function App() {
               setRole(e.target.value);
             }}
           />
-          <div className="flex flex-wrap justify-center p-4 bg-[#f6b42c]">
+          <div className="flex flex-wrap justify-center bg-gradient-to-r from-[#d69c28] to-[#fe642a] p-4">
             {employees.map((employee) => {
               console.log(employee);
               return (
                 <Employee
+                  key={uuidv4()}
                   name={employee.name}
                   role={employee.role}
                   tier={employee.tier}
