@@ -21,10 +21,11 @@ function EditEmployee(props) {
       >
         Edit Employee
       </button>
-
-      <button className="rounded-full border border-[#f6b42c] px-4 py-1 text-sm font-semibold text-[#d69c28] hover:border-transparent hover:bg-[#fe642a] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#f6b42c] focus:ring-offset-2">
-        View Training
-      </button>
+      <a href="tasks">
+        <button className="my-2 rounded-full border border-[#f6b42c] px-4 py-1 text-sm font-semibold text-[#d69c28] hover:border-transparent hover:bg-[#fe642a] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#f6b42c] focus:ring-offset-2">
+          View Training
+        </button>
+      </a>
 
       <Modal
         show={show}

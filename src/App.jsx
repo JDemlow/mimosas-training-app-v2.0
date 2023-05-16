@@ -7,12 +7,17 @@ import { v4 as uuidv4 } from "uuid";
 import EditEmployee from "./compontents/EditEmployee";
 import Header from "./compontents/Header";
 import Employees from "./pages/Employees";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
     <Header>
-      <Employees />
-      <TodoApp />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/employees" element={<Employees />} />
+          <Route path="/tasks" element={<TodoApp />} />
+        </Routes>
+      </BrowserRouter>
     </Header>
   );
 }
