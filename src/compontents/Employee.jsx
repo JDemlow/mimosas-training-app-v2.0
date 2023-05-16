@@ -15,13 +15,7 @@ function Employee(props) {
           <p className="font-medium text-slate-500">{props.tier}</p>
         </div>
 
-        <EditEmployee
-          id={props.id}
-          name={props.name}
-          role={props.role}
-          tier={props.tier}
-          updateEmployee={props.updateEmployee}
-        />
+        {props.editEmployee}
       </div>
     </div>
   );

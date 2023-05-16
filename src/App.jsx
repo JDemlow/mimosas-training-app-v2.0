@@ -4,6 +4,7 @@ import { useState } from "react";
 import TodoApp from "./compontents/TodoApp";
 import AddEmployee from "./compontents/AddEmployee";
 import { v4 as uuidv4 } from "uuid";
+import EditEmployee from "./compontents/EditEmployee";
 
 function App() {
   const [role, setRole] = useState("dev");
@@ -86,6 +87,15 @@ function App() {
           />
           <div className="flex flex-wrap justify-center bg-gradient-to-r from-[#d69c28] to-[#fe642a] p-4">
             {employees.map((employee) => {
+              const editEmployee = (
+                <EditEmployee
+                  id={employee.id}
+                  name={employee.name}
+                  role={employee.role}
+                  tier={employee.tier}
+                  updateEmployee={updateEmployee}
+                />
+              );
               return (
                 <Employee
                   key={employee.id}
@@ -94,7 +104,7 @@ function App() {
                   role={employee.role}
                   tier={employee.tier}
                   img={employee.img}
-                  updateEmployee={updateEmployee}
+                  editEmployee={editEmployee}
                 />
               );
             })}
