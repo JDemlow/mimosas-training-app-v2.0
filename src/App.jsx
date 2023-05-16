@@ -2,6 +2,7 @@ import "../src/index.css";
 import Employee from "./compontents/Employee";
 import { useState } from "react";
 import TodoApp from "./compontents/TodoApp";
+import AddEmployee from "./compontents/AddEmployee";
 import { v4 as uuidv4 } from "uuid";
 
 function App() {
@@ -47,7 +48,7 @@ function App() {
       name: "Alex",
       role: "Server",
       tier: "Tier 3",
-      img: "https://images.pexels.com/photos/4926677/pexels-photo-4926677.jpeg",
+      img: "https://static.vecteezy.com/system/resources/previews/001/840/618/original/picture-profile-icon-male-icon-human-or-people-sign-and-symbol-free-vector.jpg",
     },
   ]);
 
@@ -59,6 +60,17 @@ function App() {
       return employee;
     });
     setEmployees(updatedEmployees);
+  }
+
+  function newEmployee(name, role, tier) {
+    const newEmployee = {
+      id: uuidv4(),
+      name: name,
+      role: role,
+      tier: tier,
+      img: "https://static.vecteezy.com/system/resources/previews/001/840/618/original/picture-profile-icon-male-icon-human-or-people-sign-and-symbol-free-vector.jpg",
+    };
+    setEmployees([...employees, newEmployee]);
   }
 
   const showEmployees = true;
@@ -86,6 +98,9 @@ function App() {
                 />
               );
             })}
+          </div>
+          <div className="flex flex-wrap justify-center bg-gradient-to-r from-[#d69c28] to-[#fe642a] p-4">
+            <AddEmployee newEmployee={newEmployee} />
           </div>
           <div>
             <TodoApp />

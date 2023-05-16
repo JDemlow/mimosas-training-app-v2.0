@@ -3,10 +3,10 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import TodoApp from "./TodoApp";
 
-function EditEmployee(props) {
-  const [name, setName] = useState(props.name);
-  const [role, setRole] = useState(props.role);
-  const [tier, setTier] = useState(props.tier);
+function AddEmployee(props) {
+  const [name, setName] = useState("");
+  const [role, setRole] = useState("");
+  const [tier, setTier] = useState("");
 
   const [show, setShow] = useState(false);
 
@@ -17,13 +17,9 @@ function EditEmployee(props) {
     <>
       <button
         onClick={handleShow}
-        className="rounded-full border border-[#f6b42c] px-4 py-1 text-sm font-semibold text-[#d69c28] hover:border-transparent hover:bg-[#fe642a] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#f6b42c] focus:ring-offset-2"
+        className="m-2 mx-auto block rounded bg-[#f6b42c] px-4 py-2 font-bold text-white hover:bg-[#fe642a]"
       >
-        Edit Employee
-      </button>
-
-      <button className="rounded-full border border-[#f6b42c] px-4 py-1 text-sm font-semibold text-[#d69c28] hover:border-transparent hover:bg-[#fe642a] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#f6b42c] focus:ring-offset-2">
-        View Training
+        Add New Employee
       </button>
 
       <Modal
@@ -33,14 +29,13 @@ function EditEmployee(props) {
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Update Employee</Modal.Title>
+          <Modal.Title>Add Employee</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form
             onSubmit={(e) => {
-              handleClose();
               e.preventDefault();
-              props.updateEmployee(props.id, name, role, tier);
+              props.newEmployee(name, role, tier);
             }}
             id="editModal"
             className="w-full max-w-sm"
@@ -58,6 +53,7 @@ function EditEmployee(props) {
                 <input
                   className="w-full appearance-none rounded border-2 border-gray-200 bg-gray-200 px-3 py-2 leading-tight text-gray-700 focus:border-[#f6b42c] focus:bg-white focus:outline-none"
                   id="name"
+                  placeholder="John"
                   type="text"
                   value={name}
                   onChange={(e) => {
@@ -79,6 +75,7 @@ function EditEmployee(props) {
                 <input
                   className="w-full appearance-none rounded border-2 border-gray-200 bg-gray-200 px-3 py-2 leading-tight text-gray-700 focus:border-[#f6b42c] focus:bg-white focus:outline-none"
                   id="role"
+                  placeholder="Bartender"
                   type="text"
                   value={role}
                   onChange={(e) => {
@@ -100,6 +97,7 @@ function EditEmployee(props) {
                 <input
                   className="w-full appearance-none rounded border-2 border-gray-200 bg-gray-200 px-3 py-2 leading-tight text-gray-700 focus:border-[#f6b42c] focus:bg-white focus:outline-none"
                   id="tier"
+                  placeholder="Tier 3"
                   type="text"
                   value={tier}
                   onChange={(e) => {
@@ -119,9 +117,10 @@ function EditEmployee(props) {
           </button>
           <button
             className="rounded bg-[#f6b42c] px-4 py-2 font-bold text-white hover:bg-[#fe642a]"
+            onClick={handleClose}
             form="editModal"
           >
-            Update
+            Add Employee
           </button>
         </Modal.Footer>
       </Modal>
@@ -129,4 +128,4 @@ function EditEmployee(props) {
   );
 }
 
-export default EditEmployee;
+export default AddEmployee;
