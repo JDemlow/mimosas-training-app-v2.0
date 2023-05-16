@@ -5,9 +5,10 @@ import { getFirestore } from "firebase/firestore";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
+
 const firebaseConfig = {
-  //Readd api key for .env
-  apiKey: "",
+  //Read api key for .env
+  apiKey: JSON.stringify(import.meta.env),
   authDomain: "mimosas-training-app.firebaseapp.com",
   projectId: "mimosas-training-app",
   storageBucket: "mimosas-training-app.appspot.com",
@@ -18,3 +19,5 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+
+console.log(firebaseConfig.apiKey);

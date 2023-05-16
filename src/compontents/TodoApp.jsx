@@ -19,7 +19,7 @@ const style = {
   heading: `text-3xl fonnt-bold text-center text-gray-800 p-2`,
   form: `flex justify-between`,
   input: `border p-2 w-full text-xl`,
-  button: `border p-4 ml-2 bg-purple-500 text-slate-100`,
+  button: `border p-4 ml-2 bg-[#f6b42c] hover:bg-[#fe642a] text-slate-100`,
   count: `text-center p-2`,
 };
 
