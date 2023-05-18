@@ -1,77 +1,65 @@
 import "../index.css";
 import Employee from "../compontents/Employee";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TodoApp from "../compontents/TodoApp";
 import AddEmployee from "../compontents/AddEmployee";
 import { v4 as uuidv4 } from "uuid";
 import EditEmployee from "../compontents/EditEmployee";
+import { db } from "../firebase";
 import Header from "../compontents/Header";
+import {
+  collection,
+  onSnapshot,
+  addDoc,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 
 function Employees() {
-  const [employees, setEmployees] = useState([
-    {
-      id: 1,
-      name: "Tristan",
-      role: "Server / Bartender",
-      tier: "Tier 4",
-      img: "https://images.pexels.com/photos/4926674/pexels-photo-4926674.jpeg",
-    },
-    {
-      id: 2,
-      name: "Johnathan",
-      role: "Server / Bartender",
-      tier: "Tier 4",
-      img: "https://images.pexels.com/photos/4926672/pexels-photo-4926672.jpeg",
-    },
-    {
-      id: 3,
-      name: "James",
-      role: "Server",
-      tier: "Tier 5",
-      img: "https://images.pexels.com/photos/4926673/pexels-photo-4926673.jpeg",
-    },
-    {
-      id: 4,
-      name: "Joe",
-      role: "Supervisor / Server",
-      tier: "Tier 5",
-      img: "https://images.pexels.com/photos/4926675/pexels-photo-4926675.jpeg",
-    },
-    {
-      id: 5,
-      name: "Zach",
-      role: "Supervisor / Bartender",
-      tier: "Tier 5",
-      img: "https://images.pexels.com/photos/4926676/pexels-photo-4926676.jpeg",
-    },
-    {
-      id: 6,
-      name: "Alex",
-      role: "Server",
-      tier: "Tier 3",
-      img: "https://static.vecteezy.com/system/resources/previews/001/840/618/original/picture-profile-icon-male-icon-human-or-people-sign-and-symbol-free-vector.jpg",
-    },
-  ]);
+  const [employees, setEmployees] = useState([]);
 
-  function updateEmployee(id, newName, newRole, newTier) {
-    const updatedEmployees = employees.map((employee) => {
-      if (id == employee.id) {
-        return { ...employee, name: newName, role: newRole, tier: newTier };
-      }
-      return employee;
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "employees"), (snapshot) => {
+      const employeeData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setEmployees(employeeData);
     });
-    setEmployees(updatedEmployees);
-  }
+
+    return unsubscribe;
+  }, []);
+
+  const updateEmployee = async (id, { name, role, tier }) => {
+    await updateDoc(doc(db, "employees", id), { name, role, tier });
+    setEmployees((prevEmployees) => {
+      return prevEmployees.map((employee) => {
+        if (employee.id === id) {
+          return { ...employee, name, role, tier };
+        }
+        return employee;
+      });
+    });
+  };
 
   function newEmployee(name, role, tier) {
     const newEmployee = {
-      id: uuidv4(),
       name: name,
       role: role,
       tier: tier,
       img: "https://static.vecteezy.com/system/resources/previews/001/840/618/original/picture-profile-icon-male-icon-human-or-people-sign-and-symbol-free-vector.jpg",
+      id: uuidv4(),
     };
-    setEmployees([...employees, newEmployee]);
+    addDoc(collection(db, "employees"), newEmployee)
+      .then((docRef) => {
+        setEmployees((prevEmployees) => [
+          ...prevEmployees,
+          { ...newEmployee, id: docRef.id },
+        ]);
+      })
+      .catch((error) => {
+        console.error("Error adding employee: ", error);
+      });
   }
 
   const showEmployees = true;

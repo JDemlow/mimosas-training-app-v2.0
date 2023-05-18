@@ -2,6 +2,13 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import TodoApp from "./TodoApp";
+import {
+  collection,
+  onSnapshot,
+  addDoc,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 
 function EditEmployee(props) {
   const [name, setName] = useState(props.name);
@@ -41,7 +48,7 @@ function EditEmployee(props) {
             onSubmit={(e) => {
               handleClose();
               e.preventDefault();
-              props.updateEmployee(props.id, name, role, tier);
+              props.updateEmployee(props.id, { name, role, tier });
             }}
             id="editModal"
             className="w-full max-w-sm"
