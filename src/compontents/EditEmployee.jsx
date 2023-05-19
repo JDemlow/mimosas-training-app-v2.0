@@ -57,7 +57,7 @@ function EditEmployee(props) {
               <div className="md:w-1/3">
                 <label
                   className="mb-1 block pr-4 font-bold text-gray-500 md:mb-0 md:text-right"
-                  for="name"
+                  htmlFor="name"
                 >
                   Full Name
                 </label>
@@ -78,7 +78,7 @@ function EditEmployee(props) {
               <div className="md:w-1/3">
                 <label
                   className="mb-1 block pr-4 font-bold text-gray-500 md:mb-0 md:text-right"
-                  for="role"
+                  htmlFor="role"
                 >
                   Position
                 </label>
@@ -99,7 +99,7 @@ function EditEmployee(props) {
               <div className="md:w-1/3">
                 <label
                   className="mb-1 block pr-4 font-bold text-gray-500 md:mb-0 md:text-right"
-                  for="tier"
+                  htmlFor="tier"
                 >
                   Current Tier
                 </label>

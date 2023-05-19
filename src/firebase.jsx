@@ -1,6 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -8,7 +10,7 @@ import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   //Read api key for .env
-  apiKey: JSON.stringify(import.meta.env),
+  apiKey: import.meta.env.VITE_REACT_API_KEY,
   authDomain: "mimosas-training-app.firebaseapp.com",
   projectId: "mimosas-training-app",
   storageBucket: "mimosas-training-app.appspot.com",
@@ -19,3 +21,4 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+export const auth = getAuth(app);
