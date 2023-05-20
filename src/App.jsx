@@ -12,21 +12,29 @@ import Signin from "./compontents/Signin";
 import Signup from "./compontents/Signup";
 import Account from "./compontents/Account";
 import { AuthContextProvider } from "./compontents/context/AuthContext";
+import ProtectedRoute from "./compontents/ProtectedRoute";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Header />
-      <AuthContextProvider>
+    <AuthContextProvider>
+      <BrowserRouter>
+        <Header />
         <Routes>
-          <Route path="/" element={<Signin />}></Route>
-          <Route path="/signup" element={<Signup />}></Route>
-          <Route path="/account" element={<Account />}></Route>
+          <Route path="/" element={<Signin />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route
+            path="/account"
+            element={
+              <ProtectedRoute>
+                <Account />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/employees" element={<Employees />} />
           <Route path="/tasks" element={<TodoApp />} />
         </Routes>
-      </AuthContextProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </AuthContextProvider>
   );
 }
 

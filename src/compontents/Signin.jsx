@@ -25,9 +25,9 @@ const Signin = () => {
     <div className="mx-auto my-16 max-w-[700px] p-4">
       <div>
         <h1 className="py-2 text-2xl font-bold">Sign in to your account</h1>
-        <p className="py-2">
+        {/* <p className="py-2">
           Don't have an account yet? <Link to="/signup">Sign Up.</Link>
-        </p>
+        </p> */}
       </div>
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col py-2">
