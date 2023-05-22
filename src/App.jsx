@@ -1,3 +1,4 @@
+import React from "react";
 import "../src/index.css";
 import Employee from "./compontents/Employee";
 import { useState } from "react";
@@ -18,20 +19,38 @@ function App() {
   return (
     <AuthContextProvider>
       <BrowserRouter>
-        <Header />
         <Routes>
           <Route path="/" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
           <Route
             path="/account"
             element={
-              <ProtectedRoute>
-                <Account />
-              </ProtectedRoute>
+              <>
+                <Header />
+                <ProtectedRoute>
+                  <Account />
+                </ProtectedRoute>
+              </>
             }
           />
-          <Route path="/employees" element={<Employees />} />
-          <Route path="/tasks" element={<TodoApp />} />
+          <Route
+            path="/employees"
+            element={
+              <>
+                <Header />
+                <Employees />
+              </>
+            }
+          />
+          <Route
+            path="/tasks"
+            element={
+              <>
+                <Header />
+                <TodoApp />
+              </>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </AuthContextProvider>
