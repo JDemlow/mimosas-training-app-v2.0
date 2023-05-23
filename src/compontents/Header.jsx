@@ -1,7 +1,8 @@
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { UserAuth } from "./context/AuthContext";
 
 const navigation = [
   { name: "Dashboard", href: "employees", current: true },
@@ -10,11 +11,23 @@ const navigation = [
   { name: "Calendar", href: "tasks", current: false },
 ];
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
 export default function Header(props) {
+  const { logout } = UserAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/");
+      console.log("You are logged out");
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  function classNames(...classes) {
+    return classes.filter(Boolean).join(" ");
+  }
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -33,20 +46,19 @@ export default function Header(props) {
                 </Disclosure.Button>
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <Link to="/">
-                  <div className="flex flex-shrink-0 items-center">
-                    <img
-                      className="block h-8 w-auto lg:hidden"
-                      src="https://static.wixstatic.com/media/23327e_faf22b12eb4d45109ccd29d36e6eb979~mv2.png/v1/crop/x_7,y_0,w_477,h_308/fill/w_316,h_200,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Mimosas%201_webp.png"
-                      alt="Mimosas Logo"
-                    />
-                    <img
-                      className="hidden h-8 w-auto lg:block"
-                      src="https://static.wixstatic.com/media/23327e_faf22b12eb4d45109ccd29d36e6eb979~mv2.png/v1/crop/x_7,y_0,w_477,h_308/fill/w_316,h_200,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Mimosas%201_webp.png"
-                      alt="Mimosas Logo"
-                    />
-                  </div>
-                </Link>
+                <div className="flex flex-shrink-0 items-center">
+                  <img
+                    className="block h-8 w-auto lg:hidden"
+                    src="https://static.wixstatic.com/media/23327e_faf22b12eb4d45109ccd29d36e6eb979~mv2.png/v1/crop/x_7,y_0,w_477,h_308/fill/w_316,h_200,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Mimosas%201_webp.png"
+                    alt="Mimosas Logo"
+                  />
+                  <img
+                    className="hidden h-8 w-auto lg:block"
+                    src="https://static.wixstatic.com/media/23327e_faf22b12eb4d45109ccd29d36e6eb979~mv2.png/v1/crop/x_7,y_0,w_477,h_308/fill/w_316,h_200,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Mimosas%201_webp.png"
+                    alt="Mimosas Logo"
+                  />
+                </div>
+
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
@@ -68,13 +80,13 @@ export default function Header(props) {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button
+                {/* <button
                   type="button"
                   className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                 >
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
+                </button> */}
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
@@ -98,42 +110,31 @@ export default function Header(props) {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <Link to="/account" className="no-underline">
+                        <Menu.Item>
+                          {({ active }) => (
+                            <a
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700 no-underline"
+                              )}
+                              href="#"
+                            >
+                              Your Profile
+                            </a>
+                          )}
+                        </Menu.Item>
+                      </Link>
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="#"
                             className={classNames(
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700 no-underline"
                             )}
+                            href="/"
                           >
-                            Your Profile
-                          </a>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700 no-underline"
-                            )}
-                          >
-                            Settings
-                          </a>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700 no-underline"
-                            )}
-                          >
-                            Log out
+                            <button onClick={handleLogout}>Log out</button>
                           </a>
                         )}
                       </Menu.Item>
@@ -153,8 +154,8 @@ export default function Header(props) {
                   href={item.href}
                   className={classNames(
                     item.current
-                      ? "bg-gray-900 text-white"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                      ? "bg-gray-900 text-white no-underline"
+                      : "text-gray-300 no-underline hover:bg-gray-700 hover:text-white",
                     "block rounded-md px-3 py-2 text-base font-medium"
                   )}
                   aria-current={item.current ? "page" : undefined}
