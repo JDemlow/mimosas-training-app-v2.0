@@ -17,7 +17,7 @@ const Accounts = () => {
   };
 
   return (
-    <div className="mx-auto my-16 max-w-[600px] p-4">
+    <div className="mx-auto my-16 h-screen w-screen max-w-[600px] p-4">
       <h1 className="py-4 text-2xl font-bold">Account</h1>
       <p>User Email: {user && user.email}</p>
       <button

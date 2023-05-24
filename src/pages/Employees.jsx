@@ -3,7 +3,6 @@ import Employee from "../compontents/Employee";
 import { useState, useEffect } from "react";
 import TodoApp from "../compontents/TodoApp";
 import AddEmployee from "../compontents/AddEmployee";
-import { v4 as uuidv4 } from "uuid";
 import EditEmployee from "../compontents/EditEmployee";
 import { db } from "../firebase";
 import Header from "../compontents/Header";
@@ -13,6 +12,8 @@ import {
   addDoc,
   updateDoc,
   doc,
+  deleteDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 
 function Employees() {
@@ -32,14 +33,14 @@ function Employees() {
 
   const updateEmployee = async (id, { name, role, tier }) => {
     await updateDoc(doc(db, "employees", id), { name, role, tier });
-    setEmployees((prevEmployees) => {
-      return prevEmployees.map((employee) => {
+    setEmployees((prevEmployees) =>
+      prevEmployees.map((employee) => {
         if (employee.id === id) {
           return { ...employee, name, role, tier };
         }
         return employee;
-      });
-    });
+      })
+    );
   };
 
   function newEmployee(name, role, tier) {
@@ -48,14 +49,14 @@ function Employees() {
       role: role,
       tier: tier,
       img: "https://static.vecteezy.com/system/resources/previews/001/840/618/original/picture-profile-icon-male-icon-human-or-people-sign-and-symbol-free-vector.jpg",
-      id: uuidv4(),
+      createdAt: serverTimestamp(),
     };
+
     addDoc(collection(db, "employees"), newEmployee)
       .then((docRef) => {
-        setEmployees((prevEmployees) => [
-          ...prevEmployees,
-          { ...newEmployee, id: docRef.id },
-        ]);
+        setEmployees((prevEmployees) =>
+          prevEmployees.concat({ ...newEmployee, id: docRef.id })
+        );
       })
       .catch((error) => {
         console.error("Error adding employee: ", error);
@@ -68,7 +69,7 @@ function Employees() {
       {showEmployees ? (
         <>
           <div className="flex flex-wrap justify-center p-4">
-            {employees.map((employee) => {
+            {employees.map((employee, index) => {
               const editEmployee = (
                 <EditEmployee
                   id={employee.id}
@@ -76,11 +77,13 @@ function Employees() {
                   role={employee.role}
                   tier={employee.tier}
                   updateEmployee={updateEmployee}
+                  employees={employees}
+                  setEmployees={setEmployees} // Pass the setEmployees function as a prop
                 />
               );
               return (
                 <Employee
-                  key={employee.id}
+                  key={`${employee.id}-${index}`}
                   id={employee.id}
                   name={employee.name}
                   role={employee.role}
@@ -91,6 +94,7 @@ function Employees() {
               );
             })}
           </div>
+
           <div className="flex flex-wrap justify-center bg-gradient-to-r from-[#d69c28] to-[#fe642a] p-4">
             <AddEmployee newEmployee={newEmployee} />
           </div>

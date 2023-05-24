@@ -28,6 +28,7 @@ export default function Header(props) {
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -110,32 +111,35 @@ export default function Header(props) {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <Link to="/account" className="no-underline">
-                        <Menu.Item>
-                          {({ active }) => (
-                            <a
-                              className={classNames(
-                                active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700 no-underline"
-                              )}
-                              href="#"
-                            >
-                              Your Profile
-                            </a>
-                          )}
-                        </Menu.Item>
-                      </Link>
                       <Menu.Item>
                         {({ active }) => (
-                          <a
+                          <Link
+                            to="/account"
                             className={classNames(
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700 no-underline"
                             )}
-                            href="/"
                           >
-                            <button onClick={handleLogout}>Log out</button>
-                          </a>
+                            Your Profile
+                          </Link>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <Link
+                            to="/"
+                            className={classNames(
+                              active ? "bg-gray-100" : "",
+                              "block px-4 py-2 text-sm text-gray-700 no-underline"
+                            )}
+                          >
+                            <button
+                              onClick={handleLogout}
+                              className="w-full text-left"
+                            >
+                              Log out
+                            </button>
+                          </Link>
                         )}
                       </Menu.Item>
                     </Menu.Items>

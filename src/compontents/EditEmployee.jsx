@@ -8,7 +8,10 @@ import {
   addDoc,
   updateDoc,
   doc,
+  deleteDoc,
 } from "firebase/firestore";
+import { db } from "../firebase";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 function EditEmployee(props) {
   const [name, setName] = useState(props.name);
@@ -19,6 +22,14 @@ function EditEmployee(props) {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const deleteEmployee = async (id) => {
+    await deleteDoc(doc(db, "employees", id));
+    const updatedEmployees = props.employees.filter(
+      (employee) => employee.id !== id
+    );
+    props.setEmployees(updatedEmployees); // Update the state in the parent component
+  };
 
   return (
     <>
@@ -33,6 +44,10 @@ function EditEmployee(props) {
           View Training
         </button>
       </a>
+
+      <button onClick={() => deleteEmployee(props.id)}>
+        {<FaRegTrashAlt />}
+      </button>
 
       <Modal
         show={show}

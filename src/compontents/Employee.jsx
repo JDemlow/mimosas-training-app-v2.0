@@ -6,7 +6,7 @@ function Employee(props) {
       <img
         className=" mx-auto block h-24 h-[100px] w-[100px] rounded-full rounded-full object-cover sm:mx-0 sm:shrink-0"
         src={props.img}
-        alt="Woman's Face"
+        alt="generic avatar"
       />
       <div className="space-y-2 text-center sm:text-left">
         <div className="space-y-0.5">

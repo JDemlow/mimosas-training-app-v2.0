@@ -1,6 +1,7 @@
 import React from "react";
 import "../src/index.css";
 import Employee from "./compontents/Employee";
+import Footer from "./compontents/Footer";
 import { useState } from "react";
 import TodoApp from "./compontents/TodoApp";
 import AddEmployee from "./compontents/AddEmployee";
@@ -12,7 +13,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Signin from "./compontents/Signin";
 import Signup from "./compontents/Signup";
 import Account from "./compontents/Account";
-import TrainingMaterials from "./pages/trainingMaterials";
+import TrainingMaterials from "./pages/TrainingMaterials";
 import { AuthContextProvider } from "./compontents/context/AuthContext";
 import ProtectedRoute from "./compontents/ProtectedRoute";
 
@@ -31,6 +32,7 @@ function App() {
                 <ProtectedRoute>
                   <Account />
                 </ProtectedRoute>
+                <Footer />
               </>
             }
           />
@@ -40,6 +42,7 @@ function App() {
               <>
                 <Header />
                 <Employees />
+                <Footer />
               </>
             }
           />
@@ -49,6 +52,7 @@ function App() {
               <>
                 <Header />
                 <TodoApp />
+                <Footer />
               </>
             }
           />
@@ -58,6 +62,7 @@ function App() {
               <>
                 <Header />
                 <TrainingMaterials />
+                <Footer />
               </>
             }
           />
