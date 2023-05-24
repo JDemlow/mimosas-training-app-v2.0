@@ -10,7 +10,7 @@ import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   //Read api key for .env
-  apiKey: import.meta.env.VITE_REACT_API_KEY,
+  apiKey: "AIzaSyBplM-ShTcNo1R_pfvHBlsekxwURriKesE",
   authDomain: "mimosas-training-app.firebaseapp.com",
   projectId: "mimosas-training-app",
   storageBucket: "mimosas-training-app.appspot.com",
