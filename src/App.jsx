@@ -12,6 +12,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Signin from "./compontents/Signin";
 import Signup from "./compontents/Signup";
 import Account from "./compontents/Account";
+import TrainingMaterials from "./pages/trainingMaterials";
 import { AuthContextProvider } from "./compontents/context/AuthContext";
 import ProtectedRoute from "./compontents/ProtectedRoute";
 
@@ -48,6 +49,15 @@ function App() {
               <>
                 <Header />
                 <TodoApp />
+              </>
+            }
+          />
+          <Route
+            path="/trainingmaterials"
+            element={
+              <>
+                <Header />
+                <TrainingMaterials />
               </>
             }
           />
