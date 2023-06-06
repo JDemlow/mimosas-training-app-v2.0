@@ -9,7 +9,6 @@ import { getAuth } from "firebase/auth";
 // Your web app's Firebase configuration
 
 const firebaseConfig = {
-  //Read api key for .env
   apiKey: import.meta.env.VITE_REACT_API_KEY,
   authDomain: import.meta.env.VITE_REACT_AUTH_DOMAIN,
   projectId: "mimosas-training-app",
