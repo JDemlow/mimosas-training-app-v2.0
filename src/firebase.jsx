@@ -10,12 +10,12 @@ import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   //Read api key for .env
-  apiKey: "AIzaSyBplM-ShTcNo1R_pfvHBlsekxwURriKesE",
-  authDomain: "mimosas-training-app.firebaseapp.com",
+  apiKey: import.meta.env.VITE_REACT_API_KEY,
+  authDomain: import.meta.env.VITE_REACT_AUTH_DOMAIN,
   projectId: "mimosas-training-app",
-  storageBucket: "mimosas-training-app.appspot.com",
-  messagingSenderId: "467708964248",
-  appId: "1:467708964248:web:f7b98851958b07212d0fed",
+  storageBucket: import.meta.env.VITE_REACT_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_REACT_MESSAGE_SENDER_ID,
+  appId: import.meta.env.VITE_REACT_APP_ID,
 };
 
 // Initialize Firebase
