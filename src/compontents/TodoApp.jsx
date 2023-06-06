@@ -1,7 +1,7 @@
 import "../index.css";
 import { AiOutlinePlus } from "react-icons/ai";
 import React, { useState, useEffect } from "react";
-import Todo from "./Todo";
+import Todo from "./todo";
 import { db } from "../firebase";
 import {
   query,
@@ -11,7 +11,6 @@ import {
   doc,
   addDoc,
   deleteDoc,
-  getDocs,
 } from "firebase/firestore";
 
 const style = {
@@ -24,41 +23,31 @@ const style = {
   count: `text-center p-2`,
 };
 
+//#f6b42c
+//#fe642a
+//#d69c28
+
 function TodoApp() {
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState("");
 
-  const [employeeId, setEmployeeId] = useState("");
-
   // Create todo
+
   const createTodo = async (e) => {
-    e.preventDefault();
+    e.preventDefault(e);
     if (input === "") {
       alert("Please enter a valid training task");
       return;
     }
-
     await addDoc(collection(db, "todos"), {
       text: input,
       completed: false,
-      employeeId: employeeId,
     });
-
     setInput("");
   };
 
-  useEffect(() => {
-    const fetchEmployeeId = async () => {
-      const employeesSnapshot = await getDocs(collection(db, "employees"));
-      const employee = employeesSnapshot.docs[0]; // Assuming there's only one employee for now
-      const employeeId = employee.id;
-      setEmployeeId(employeeId);
-    };
-
-    fetchEmployeeId();
-  }, []);
-
   // Read todo from firebase
+
   useEffect(() => {
     const q = query(collection(db, "todos"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -72,6 +61,7 @@ function TodoApp() {
   }, []);
 
   // Update todo in firebase
+
   const toggleComplete = async (todo) => {
     await updateDoc(doc(db, "todos", todo.id), {
       completed: !todo.completed,
@@ -79,6 +69,7 @@ function TodoApp() {
   };
 
   // Delete todo
+
   const deleteTodo = async (id) => {
     await deleteDoc(doc(db, "todos", id));
   };
@@ -100,10 +91,11 @@ function TodoApp() {
           </button>
         </form>
         <ul>
-          {todos.map((todo) => (
+          {todos.map((todo, index) => (
             <Todo
-              key={todo.id}
+              key={index}
               todo={todo}
+              //Functions beinng passed up
               toggleComplete={toggleComplete}
               deleteTodo={deleteTodo}
             />
