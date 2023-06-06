@@ -5,10 +5,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "./context/AuthContext";
 
 const navigation = [
-  { name: "Dashboard", href: "employees", current: true },
-  { name: "Employees", href: "employees", current: false },
-  { name: "Training Materials", href: "trainingmaterials", current: false },
-  { name: "Calendar", href: "tasks", current: false },
+  { name: "Dashboard", href: "employees" },
+  { name: "Employees", href: "employees" },
+  { name: "Training Materials", href: "trainingmaterials" },
+  { name: "Tasks", href: "tasks" },
 ];
 
 export default function Header(props) {
