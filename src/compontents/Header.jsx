@@ -4,11 +4,25 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "./context/AuthContext";
 
+const currentPath = window.location.pathname;
+
 const navigation = [
-  { name: "Dashboard", href: "/employees" },
-  { name: "Employees", href: "/employees" },
-  { name: "Training Materials", href: "/trainingmaterials" },
-  { name: "Tasks", href: "/tasks" },
+  {
+    name: "Dashboard",
+    href: "/employees",
+    current: currentPath === "/employees",
+  },
+  {
+    name: "Employees",
+    href: "/employees",
+    current: currentPath === "/employees",
+  },
+  {
+    name: "Training Materials",
+    href: "/trainingmaterials",
+    current: currentPath === "/trainingmaterials",
+  },
+  { name: "Tasks", href: "/tasks", current: currentPath === "/tasks" },
 ];
 
 export default function Header(props) {
