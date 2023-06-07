@@ -4,25 +4,11 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "./context/AuthContext";
 
-const currentPath = window.location.pathname;
-
 const navigation = [
-  {
-    name: "Dashboard",
-    href: "/employees",
-    current: currentPath === "/employees",
-  },
-  {
-    name: "Employees",
-    href: "/employees",
-    current: currentPath === "/employees",
-  },
-  {
-    name: "Training Materials",
-    href: "/trainingmaterials",
-    current: currentPath === "/trainingmaterials",
-  },
-  { name: "Tasks", href: "/tasks", current: currentPath === "/tasks" },
+  { name: "Dashboard", href: "/employees" },
+  { name: "Employees", href: "/employees" },
+  { name: "Training Materials", href: "/trainingmaterials" },
+  { name: "Tasks", href: "/tasks" },
 ];
 
 export default function Header(props) {
@@ -86,7 +72,9 @@ export default function Header(props) {
                             : "text-gray-300 no-underline hover:bg-gray-700 hover:text-white",
                           "rounded-md px-3 py-2 text-sm font-medium"
                         )}
-                        aria-current={item.current ? "page" : undefined}
+                        aria-current={
+                          location.pathname === item.href ? "page" : undefined
+                        }
                       >
                         {item.name}
                       </a>
@@ -164,22 +152,23 @@ export default function Header(props) {
           </div>
 
           <Disclosure.Panel className="sm:hidden">
-            <div className="space-y-1 px-2 pb-3 pt-2">
+            <div className="flex space-x-4">
               {navigation.map((item) => (
-                <Disclosure.Button
+                <Link
                   key={item.name}
-                  as="a"
-                  href={item.href}
+                  to={item.href}
                   className={classNames(
-                    item.current
+                    location.pathname === item.href
                       ? "bg-gray-900 text-white no-underline"
                       : "text-gray-300 no-underline hover:bg-gray-700 hover:text-white",
-                    "block rounded-md px-3 py-2 text-base font-medium"
+                    "rounded-md px-3 py-2 text-sm font-medium"
                   )}
-                  aria-current={item.current ? "page" : undefined}
+                  aria-current={
+                    location.pathname === item.href ? "page" : undefined
+                  }
                 >
                   {item.name}
-                </Disclosure.Button>
+                </Link>
               ))}
             </div>
           </Disclosure.Panel>
