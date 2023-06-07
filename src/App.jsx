@@ -51,7 +51,9 @@ function App() {
             element={
               <>
                 <Header />
-                <TodoApp />
+                <ProtectedRoute>
+                  <TodoApp />
+                </ProtectedRoute>
                 <Footer />
               </>
             }
@@ -61,7 +63,9 @@ function App() {
             element={
               <>
                 <Header />
-                <TrainingMaterials />
+                <ProtectedRoute>
+                  <TrainingMaterials />
+                </ProtectedRoute>
                 <Footer />
               </>
             }
