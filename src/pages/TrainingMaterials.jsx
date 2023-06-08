@@ -94,5 +94,3 @@ function TrainingMaterials(props) {
 }
 
 export default TrainingMaterials;
-
-//flex flex-wrap justify-center p-4
