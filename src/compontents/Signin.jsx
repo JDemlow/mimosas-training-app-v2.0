@@ -6,8 +6,19 @@ const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [errorType, setErrorType] = useState(""); // New state for error type
   const navigate = useNavigate();
   const { signIn } = UserAuth();
+
+  const openModal = (type) => {
+    setErrorType(type);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,6 +28,7 @@ const Signin = () => {
       navigate("/employees");
     } catch (e) {
       setError(e.message);
+      openModal(e.code); // Pass the error code as the error type
       console.log(e.message);
     }
   };
@@ -56,6 +68,28 @@ const Signin = () => {
           Sign In
         </button>
       </form>
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="rounded-lg bg-white p-4 shadow-lg">
+            <h2 className="text-xl font-bold">Please enter you credentials</h2>
+            {errorType === "auth/user-not-found" && (
+              <p>Invalid email address. Please try again.</p>
+            )}
+            {errorType === "auth/wrong-password" && (
+              <p>Invalid password. Please try again.</p>
+            )}
+            {errorType === "auth/user-not-found,auth/wrong-password" && (
+              <p>Invalid email address and password. Please try again.</p>
+            )}
+            <button
+              className="mt-4 rounded bg-slate-400 px-4 py-2 font-bold text-white hover:bg-[#fe642a]"
+              onClick={closeModal}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
