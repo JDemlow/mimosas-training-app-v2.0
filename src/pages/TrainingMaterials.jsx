@@ -1,3 +1,7 @@
+import mimosasTiersImage from "../assets/mimosas-tiers.png";
+import mimosasValuesImage from "../assets/mimosas-values.png";
+import trainingPlanImg from "../assets/mimosas-tiers.png";
+import tierCriteriaImage from "../assets/tier-criteria-december-22.png";
 import "../index.css";
 
 function TrainingMaterials(props) {
@@ -7,7 +11,7 @@ function TrainingMaterials(props) {
         <div className="m-2 min-w-[350px] max-w-[350px] space-y-2 rounded-xl bg-white px-8 py-8 shadow-lg sm:flex sm:items-center sm:space-x-6 sm:space-y-0 sm:py-4">
           <img
             className="mx-auto my-8 block h-[200px] w-[200px]  object-cover sm:h-[100px] sm:w-[100px]"
-            src="./src/assets/mimosas-tiers.png"
+            src={mimosasTiersImage}
             alt=""
           />
           <div className="flex-column flex justify-center">
@@ -28,7 +32,7 @@ function TrainingMaterials(props) {
         <div className="m-2 min-w-[350px] max-w-[350px] space-y-2 rounded-xl bg-white px-8 py-8 shadow-lg sm:flex sm:items-center sm:space-x-6 sm:space-y-0 sm:py-4">
           <img
             className="mx-auto my-8 block h-[200px] w-[200px]  object-cover sm:h-[100px] sm:w-[100px]"
-            src="./src/assets/mimosas-values.png"
+            src={mimosasValuesImage}
             alt=""
           />
           <div className="flex-column flex justify-center">
@@ -49,7 +53,7 @@ function TrainingMaterials(props) {
         <div className="m-2 min-w-[350px] max-w-[350px] space-y-2 rounded-xl bg-white px-8 py-8 shadow-lg sm:flex sm:items-center sm:space-x-6 sm:space-y-0 sm:py-4">
           <img
             className="mx-auto my-8 block h-[200px] w-[200px]  object-cover sm:h-[100px] sm:w-[100px]"
-            src="./src/assets/mimosas-tiers.png"
+            src={trainingPlanImg}
             alt=""
           />
           <div className="flex-column flex justify-center">
@@ -70,7 +74,7 @@ function TrainingMaterials(props) {
         <div className="m-2 min-w-[350px] max-w-[350px] space-y-2 rounded-xl bg-white px-8 py-8 shadow-lg sm:flex sm:items-center sm:space-x-6 sm:space-y-0 sm:py-4">
           <img
             className="mx-auto my-8 block h-[200px] w-[200px]  object-cover sm:h-[100px] sm:w-[100px]"
-            src="./src/assets/tier-criteria-december-22.png"
+            src={tierCriteriaImage}
             alt=""
           />
           <div className="flex-column flex justify-center">
