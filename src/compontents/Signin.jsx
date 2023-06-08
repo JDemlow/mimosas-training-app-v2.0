@@ -7,7 +7,7 @@ const Signin = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isModalOpen, setModalOpen] = useState(false);
-  const [errorType, setErrorType] = useState(""); // New state for error type
+  const [errorType, setErrorType] = useState("");
   const navigate = useNavigate();
   const { signIn } = UserAuth();
 
@@ -71,7 +71,7 @@ const Signin = () => {
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="rounded-lg bg-white p-4 shadow-lg">
-            <h2 className="text-xl font-bold">Please enter you credentials</h2>
+            <h2 className="text-xl font-bold">Please enter your credentials</h2>
             {errorType === "auth/user-not-found" && (
               <p>Invalid email address. Please try again.</p>
             )}
