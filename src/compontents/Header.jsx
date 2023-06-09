@@ -1,14 +1,14 @@
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "./context/AuthContext";
 
 const navigation = [
-  { name: "Dashboard", href: "/employees" },
-  { name: "Employees", href: "/employees" },
-  { name: "Training Materials", href: "/trainingmaterials" },
-  { name: "Tasks", href: "/tasks" },
+  { name: "Dashboard", href: "employees", current: true },
+  { name: "Employees", href: "employees", current: false },
+  { name: "Training Materials", href: "tasks", current: false },
+  { name: "Calendar", href: "tasks", current: false },
 ];
 
 export default function Header(props) {
@@ -28,7 +28,6 @@ export default function Header(props) {
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
-
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -72,9 +71,7 @@ export default function Header(props) {
                             : "text-gray-300 no-underline hover:bg-gray-700 hover:text-white",
                           "rounded-md px-3 py-2 text-sm font-medium"
                         )}
-                        aria-current={
-                          location.pathname === item.href ? "page" : undefined
-                        }
+                        aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
                       </a>
@@ -113,35 +110,32 @@ export default function Header(props) {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <Menu.Item>
-                        {({ active }) => (
-                          <Link
-                            to="/account"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700 no-underline"
-                            )}
-                          >
-                            Your Profile
-                          </Link>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <Link
-                            to="/"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700 no-underline"
-                            )}
-                          >
-                            <button
-                              onClick={handleLogout}
-                              className="w-full text-left"
+                      <Link to="/account" className="no-underline">
+                        <Menu.Item>
+                          {({ active }) => (
+                            <a
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700 no-underline"
+                              )}
+                              href="#"
                             >
-                              Log out
-                            </button>
-                          </Link>
+                              Your Profile
+                            </a>
+                          )}
+                        </Menu.Item>
+                      </Link>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <a
+                            className={classNames(
+                              active ? "bg-gray-100" : "",
+                              "block px-4 py-2 text-sm text-gray-700 no-underline"
+                            )}
+                            href="/"
+                          >
+                            <button onClick={handleLogout}>Log out</button>
+                          </a>
                         )}
                       </Menu.Item>
                     </Menu.Items>
@@ -152,23 +146,22 @@ export default function Header(props) {
           </div>
 
           <Disclosure.Panel className="sm:hidden">
-            <div className="flex space-x-4">
+            <div className="space-y-1 px-2 pb-3 pt-2">
               {navigation.map((item) => (
-                <Link
+                <Disclosure.Button
                   key={item.name}
-                  to={item.href}
+                  as="a"
+                  href={item.href}
                   className={classNames(
-                    location.pathname === item.href
+                    item.current
                       ? "bg-gray-900 text-white no-underline"
                       : "text-gray-300 no-underline hover:bg-gray-700 hover:text-white",
-                    "rounded-md px-3 py-2 text-sm font-medium"
+                    "block rounded-md px-3 py-2 text-base font-medium"
                   )}
-                  aria-current={
-                    location.pathname === item.href ? "page" : undefined
-                  }
+                  aria-current={item.current ? "page" : undefined}
                 >
                   {item.name}
-                </Link>
+                </Disclosure.Button>
               ))}
             </div>
           </Disclosure.Panel>
