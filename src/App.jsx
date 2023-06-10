@@ -29,9 +29,7 @@ function App() {
             element={
               <>
                 <Header />
-                <ProtectedRoute>
-                  <Account />
-                </ProtectedRoute>
+                <Account />
                 <Footer />
               </>
             }
@@ -41,9 +39,7 @@ function App() {
             element={
               <>
                 <Header />
-                <ProtectedRoute>
-                  <Employees />
-                </ProtectedRoute>
+                <Employees />
                 <Footer />
               </>
             }
@@ -53,9 +49,7 @@ function App() {
             element={
               <>
                 <Header />
-                <ProtectedRoute>
-                  <TodoApp />
-                </ProtectedRoute>
+                <TodoApp />
                 <Footer />
               </>
             }
@@ -65,9 +59,7 @@ function App() {
             element={
               <>
                 <Header />
-                <ProtectedRoute>
-                  <TrainingMaterials />
-                </ProtectedRoute>
+                <TrainingMaterials />
                 <Footer />
               </>
             }
