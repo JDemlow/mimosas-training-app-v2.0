@@ -1,23 +1,23 @@
-import { Fragment } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Link, useNavigate } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "./context/AuthContext";
 
-const navigation = [
-  { name: "Dashboard", href: "employees", current: true },
-  { name: "Employees", href: "employees", current: false },
-  { name: "Training Materials", href: "tasks", current: false },
-  { name: "Calendar", href: "tasks", current: false },
-];
-
 export default function Header(props) {
+  const [currentLink, setCurrentLink] = useState("Dashboard");
+  const updateCurrentLink = (link) => {
+    setCurrentLink(link);
+  };
+
   const { logout } = UserAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = async () => {
     try {
       await logout();
+      setCurrentLink("Dashboard");
       navigate("/");
       console.log("You are logged out");
     } catch (e) {
@@ -28,6 +28,31 @@ export default function Header(props) {
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
+
+  const navigation = [
+    {
+      name: "Employees",
+      href: "/employees",
+      current: currentLink === "Employees",
+    },
+    {
+      name: "Training Materials",
+      href: "/trainingmaterials",
+      current: currentLink === "Training Materials",
+    },
+    { name: "Tasks", href: "/tasks", current: currentLink === "Tasks" },
+  ];
+
+  useEffect(() => {
+    const currentPath = location.pathname;
+    const matchingLink = navigation.find((item) =>
+      currentPath.includes(item.href)
+    );
+    if (matchingLink) {
+      setCurrentLink(matchingLink.name);
+    }
+  }, [location.pathname]);
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -72,6 +97,7 @@ export default function Header(props) {
                           "rounded-md px-3 py-2 text-sm font-medium"
                         )}
                         aria-current={item.current ? "page" : undefined}
+                        onClick={() => setCurrentLink(item.name)}
                       >
                         {item.name}
                       </a>
@@ -152,6 +178,7 @@ export default function Header(props) {
                   key={item.name}
                   as="a"
                   href={item.href}
+                  onClick={() => updateCurrentLink(item.name)} // Update the currentLink state
                   className={classNames(
                     item.current
                       ? "bg-gray-900 text-white no-underline"
@@ -165,6 +192,7 @@ export default function Header(props) {
               ))}
             </div>
           </Disclosure.Panel>
+
           {props.children}
         </>
       )}
