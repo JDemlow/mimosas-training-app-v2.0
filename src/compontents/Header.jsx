@@ -17,7 +17,7 @@ export default function Header(props) {
   const handleLogout = async () => {
     try {
       await logout();
-      setCurrentLink("Dashboard");
+      setCurrentLink(null); // Set currentLink to null
       navigate("/");
       console.log("You are logged out");
     } catch (e) {
@@ -144,7 +144,7 @@ export default function Header(props) {
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700 no-underline"
                               )}
-                              href="#"
+                              onClick={() => setCurrentLink("Your Profile")} // Update the currentLink state
                             >
                               Your Profile
                             </a>
