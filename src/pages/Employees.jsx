@@ -1,11 +1,11 @@
 import "../index.css";
-import Employee from "../compontents/Employee";
+import Employee from "../components/Employee";
 import { useState, useEffect } from "react";
-import TodoApp from "../compontents/TodoApp";
-import AddEmployee from "../compontents/AddEmployee";
-import EditEmployee from "../compontents/EditEmployee";
+import TodoApp from "../components/TodoApp";
+import AddEmployee from "../components/AddEmployee";
+import EditEmployee from "../components/EditEmployee";
 import { db } from "../firebase";
-import Header from "../compontents/Header";
+import Header from "../components/Header";
 import {
   collection,
   onSnapshot,

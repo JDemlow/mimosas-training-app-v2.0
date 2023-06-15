@@ -1,21 +1,21 @@
 import React from "react";
 import "../src/index.css";
-import Employee from "./compontents/Employee";
-import Footer from "./compontents/Footer";
+import Employee from "./components/Employee";
+import Footer from "./components/Footer";
 import { useState } from "react";
-import TodoApp from "./compontents/TodoApp";
-import AddEmployee from "./compontents/AddEmployee";
+import TodoApp from "./components/TodoApp";
+import AddEmployee from "./components/AddEmployee";
 import { v4 as uuidv4 } from "uuid";
-import EditEmployee from "./compontents/EditEmployee";
-import Header from "./compontents/Header";
+import EditEmployee from "./components/EditEmployee";
+import Header from "./components/Header";
 import Employees from "./pages/Employees";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Signin from "./compontents/Signin";
-import Signup from "./compontents/Signup";
-import Account from "./compontents/Account";
+import Signin from "./components/Signin";
+import Signup from "./components/Signup";
+import Account from "./components/Account";
 import TrainingMaterials from "./pages/TrainingMaterials";
-import { AuthContextProvider } from "./compontents/context/AuthContext";
-import ProtectedRoute from "./compontents/ProtectedRoute";
+import { AuthContextProvider } from "./components/context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
