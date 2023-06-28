@@ -54,6 +54,7 @@ const Signin = () => {
             onChange={(e) => setEmail(e.target.value)}
             className="border p-3"
             type="email"
+            placeholder="For demo: type admin@admin.com"
           />
         </div>
         <div className="flex flex-col py-2">
@@ -62,8 +63,10 @@ const Signin = () => {
             onChange={(e) => setPassword(e.target.value)}
             className="border p-3"
             type="password"
+            placeholder="For demo: type password"
           />
         </div>
+
         <button className="m-2 mx-auto block rounded bg-[#f6b42c] px-4 py-2 font-bold text-white hover:bg-[#fe642a] focus:outline-none">
           Sign In
         </button>
