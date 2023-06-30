@@ -19,16 +19,31 @@ function EditEmployee(props) {
   const [tier, setTier] = useState(props.tier);
 
   const [show, setShow] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [employeeIdToDelete, setEmployeeIdToDelete] = useState(null);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const deleteEmployee = async (id) => {
-    await deleteDoc(doc(db, "employees", id));
-    const updatedEmployees = props.employees.filter(
-      (employee) => employee.id !== id
-    );
-    props.setEmployees(updatedEmployees); // Update the state in the parent component
+  const deleteEmployee = (id) => {
+    setEmployeeIdToDelete(id);
+    setShowConfirmation(true);
+  };
+
+  const confirmDelete = async () => {
+    if (employeeIdToDelete) {
+      await deleteDoc(doc(db, "employees", employeeIdToDelete));
+      const updatedEmployees = props.employees.filter(
+        (employee) => employee.id !== employeeIdToDelete
+      );
+      props.setEmployees(updatedEmployees); // Update the state in the parent component
+      setShowConfirmation(false);
+    }
+  };
+
+  const cancelDelete = () => {
+    setEmployeeIdToDelete(null);
+    setShowConfirmation(false);
   };
 
   return (
@@ -145,6 +160,31 @@ function EditEmployee(props) {
             form="editModal"
           >
             Update
+          </button>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        show={showConfirmation}
+        onHide={cancelDelete}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Employee</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete this employee?</Modal.Body>
+        <Modal.Footer>
+          <button
+            className="rounded bg-slate-400 px-4 py-2 font-bold text-white hover:bg-[#fe642a]"
+            onClick={cancelDelete}
+          >
+            Cancel
+          </button>
+          <button
+            className="rounded bg-[#f6b42c] px-4 py-2 font-bold text-white hover:bg-[#fe642a]"
+            onClick={confirmDelete}
+          >
+            Delete
           </button>
         </Modal.Footer>
       </Modal>
