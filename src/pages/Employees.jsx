@@ -1,15 +1,13 @@
-import "../index.css";
 import Employee from "../compontents/Employee";
 import { useState, useEffect } from "react";
-import TodoApp from "../compontents/TodoApp";
 import AddEmployee from "../compontents/AddEmployee";
 import EditEmployee from "../compontents/EditEmployee";
 import { db } from "../firebase";
-import Header from "../compontents/Header";
 import {
   collection,
   onSnapshot,
   addDoc,
+  getDocs,
   updateDoc,
   doc,
   serverTimestamp,
@@ -18,6 +16,24 @@ import {
 function Employees() {
   const [employees, setEmployees] = useState([]);
 
+  // Log Employees
+  useEffect(() => {
+    const fetchEmployeeData = async () => {
+      console.log("Fetching employee data...");
+      const employeeQuerySnapshot = await getDocs(collection(db, "employees"));
+
+      const processEmployee = (employee) => {
+        console.log("Employee: " + employee.id);
+      };
+
+      employeeQuerySnapshot.forEach((doc) => {
+        processEmployee({ id: doc.id, ...doc.data() });
+      });
+    };
+
+    fetchEmployeeData();
+  }, []);
+
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "employees"), (snapshot) => {
       const employeeData = snapshot.docs.map((doc) => ({
@@ -25,6 +41,9 @@ function Employees() {
         ...doc.data(),
       }));
       setEmployees(employeeData);
+      employeeData.forEach((employee) => {
+        console.log("Employess: " + employee.id);
+      });
     });
 
     return unsubscribe;

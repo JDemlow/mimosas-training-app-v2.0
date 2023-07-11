@@ -1,17 +1,11 @@
 import React from "react";
 import "../src/index.css";
-import Employee from "./compontents/Employee";
 import Footer from "./compontents/Footer";
-import { useState } from "react";
 import TodoApp from "./compontents/TodoApp";
-import AddEmployee from "./compontents/AddEmployee";
-import { v4 as uuidv4 } from "uuid";
-import EditEmployee from "./compontents/EditEmployee";
 import Header from "./compontents/Header";
 import Employees from "./pages/Employees";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Signin from "./compontents/Signin";
-import Signup from "./compontents/Signup";
 import Account from "./compontents/Account";
 import TrainingMaterials from "./pages/TrainingMaterials";
 import { AuthContextProvider } from "./compontents/context/AuthContext";
@@ -23,7 +17,6 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Signin />} />
-          <Route path="/signup" element={<Signup />} />
           <Route
             path="/account"
             element={

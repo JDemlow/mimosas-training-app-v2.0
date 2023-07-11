@@ -2,7 +2,6 @@ import mimosasTiersImage from "../assets/mimosas-tiers.png";
 import mimosasValuesImage from "../assets/mimosas-values.png";
 import trainingPlanImg from "../assets/mimosas-tiers.png";
 import tierCriteriaImage from "../assets/tier-criteria-december-22.png";
-import "../index.css";
 
 function TrainingMaterials(props) {
   return (

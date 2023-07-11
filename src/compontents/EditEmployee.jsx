@@ -1,12 +1,6 @@
 import { useState } from "react";
-import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import TodoApp from "./TodoApp";
 import {
-  collection,
-  onSnapshot,
-  addDoc,
-  updateDoc,
   doc,
   deleteDoc,
 } from "firebase/firestore";

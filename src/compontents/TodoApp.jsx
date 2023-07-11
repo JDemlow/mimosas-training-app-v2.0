@@ -4,11 +4,11 @@ import React, { useState, useEffect } from "react";
 import Todo from "./Todo";
 import { db } from "../firebase";
 import {
-  query,
   collection,
   onSnapshot,
   updateDoc,
   doc,
+  getDocs,
   addDoc,
   deleteDoc,
 } from "firebase/firestore";
@@ -23,55 +23,69 @@ const style = {
   count: `text-center p-2`,
 };
 
-//#f6b42c
-//#fe642a
-//#d69c28
-
 function TodoApp() {
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState("");
+  const currentEmployeeId = "EMPLOYEE_ID"; // Replace with the actual ID of the currently selected employee
 
   // Create todo
-
   const createTodo = async (e) => {
-    e.preventDefault(e);
+    e.preventDefault();
     if (input === "") {
       alert("Please enter a valid training task");
       return;
     }
-    await addDoc(collection(db, "todos"), {
+
+    await addDoc(collection(db, "employees", currentEmployeeId, "todos"), {
       text: input,
       completed: false,
     });
     setInput("");
   };
 
-  // Read todo from firebase
-
+  // Log Employees
   useEffect(() => {
-    const q = query(collection(db, "todos"));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      let todosArr = [];
-      querySnapshot.forEach((doc) => {
-        todosArr.push({ ...doc.data(), id: doc.id });
+    const fetchEmployeeData = async () => {
+      console.log("Fetching employee data...");
+      const employeeQuerySnapshot = await getDocs(collection(db, "employees"));
+
+      const processEmployee = (employee) => {
+        console.log("Employee: " + employee.id);
+      };
+
+      employeeQuerySnapshot.forEach((doc) => {
+        processEmployee({ id: doc.id, ...doc.data() });
       });
-      setTodos(todosArr);
-    });
+    };
+
+    fetchEmployeeData();
+  }, []);
+
+  // Read todos from firebase
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      collection(db, "employees", currentEmployeeId, "todos"),
+      (querySnapshot) => {
+        let todosArr = [];
+        querySnapshot.forEach((doc) => {
+          todosArr.push({ ...doc.data(), id: doc.id });
+        });
+        setTodos(todosArr);
+      }
+    );
     return () => unsubscribe();
   }, []);
 
   // Update todo in firebase
-
   const toggleComplete = async (todo) => {
-    await updateDoc(doc(db, "todos", todo.id), {
+    await updateDoc(doc(db, "employees", currentEmployeeId, "todos", todo.id), {
       completed: !todo.completed,
     });
   };
 
   // Delete todo
-
   const deleteTodo = async (id) => {
-    await deleteDoc(doc(db, "todos", id));
+    await deleteDoc(doc(db, "employees", currentEmployeeId, "todos", id));
   };
 
   return (
@@ -91,11 +105,10 @@ function TodoApp() {
           </button>
         </form>
         <ul>
-          {todos.map((todo, index) => (
+          {todos.map((todo) => (
             <Todo
-              key={index}
+              key={todo.id}
               todo={todo}
-              //Functions beinng passed up
               toggleComplete={toggleComplete}
               deleteTodo={deleteTodo}
             />
