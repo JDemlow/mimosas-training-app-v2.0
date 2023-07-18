@@ -1,11 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
-import {
-  collection,
-  getDocs,
-  
-} from "firebase/firestore";
-import { db } from "../firebase";
 
 function AddEmployee(props) {
   const [name, setName] = useState("");
@@ -16,24 +10,6 @@ function AddEmployee(props) {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  // Log Employees
-  useEffect(() => {
-    const fetchEmployeeData = async () => {
-      console.log("Fetching employee data...");
-      const employeeQuerySnapshot = await getDocs(collection(db, "employees"));
-
-      const processEmployee = (employee) => {
-        console.log("Employee: " + employee.id);
-      };
-
-      employeeQuerySnapshot.forEach((doc) => {
-        processEmployee({ id: doc.id, ...doc.data() });
-      });
-    };
-
-    fetchEmployeeData();
-  }, []);
 
   return (
     <>

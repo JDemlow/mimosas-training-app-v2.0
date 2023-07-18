@@ -16,24 +16,6 @@ import {
 function Employees() {
   const [employees, setEmployees] = useState([]);
 
-  // Log Employees
-  useEffect(() => {
-    const fetchEmployeeData = async () => {
-      console.log("Fetching employee data...");
-      const employeeQuerySnapshot = await getDocs(collection(db, "employees"));
-
-      const processEmployee = (employee) => {
-        console.log("Employee: " + employee.id);
-      };
-
-      employeeQuerySnapshot.forEach((doc) => {
-        processEmployee({ id: doc.id, ...doc.data() });
-      });
-    };
-
-    fetchEmployeeData();
-  }, []);
-
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "employees"), (snapshot) => {
       const employeeData = snapshot.docs.map((doc) => ({
