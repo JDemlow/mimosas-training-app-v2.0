@@ -17,7 +17,7 @@ export default function Header(props) {
   const handleLogout = async () => {
     try {
       await logout();
-      setCurrentLink(null); // Set currentLink to null
+      setCurrentLink(null);
       navigate("/");
       console.log("You are logged out");
     } catch (e) {
@@ -154,13 +154,14 @@ export default function Header(props) {
                       <Menu.Item>
                         {({ active }) => (
                           <a
+                            onClick={handleLogout}
                             className={classNames(
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700 no-underline"
                             )}
                             href="/"
                           >
-                            <button onClick={handleLogout}>Log out</button>
+                            Log out
                           </a>
                         )}
                       </Menu.Item>
