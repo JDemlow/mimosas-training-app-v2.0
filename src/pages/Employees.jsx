@@ -7,7 +7,6 @@ import {
   collection,
   onSnapshot,
   addDoc,
-  getDocs,
   updateDoc,
   doc,
   serverTimestamp,
@@ -24,7 +23,7 @@ function Employees() {
       }));
       setEmployees(employeeData);
       employeeData.forEach((employee) => {
-        console.log("Employess: " + employee.id);
+        console.log("Employees: " + employee.id);
       });
     });
 
