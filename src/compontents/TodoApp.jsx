@@ -2,6 +2,7 @@ import "../index.css";
 import { AiOutlinePlus } from "react-icons/ai";
 import React, { useState, useEffect } from "react";
 import Todo from "./Todo";
+import { useLocation } from "react-router-dom";
 import { db } from "../firebase";
 import {
   query,
@@ -27,9 +28,20 @@ const style = {
 //#fe642a
 //#d69c28
 
-function TodoApp() {
+function TodoApp(props) {
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState("");
+  const [employeeName, setEmployeeName] = useState("");
+  const location = useLocation();
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const name = searchParams.get("employee");
+
+    // Do something with the employeeName (e.g., set it in state)
+    // For now, let's log it to the console
+    setEmployeeName(name);
+  }, [location.search]);
 
   // Create todo
 
@@ -104,7 +116,7 @@ function TodoApp() {
 
         {todos.length < 1 ? null : (
           <p className={style.count}>
-            {`Employee has ${todos.length} tasks remaining`}
+            {`${employeeName} has ${todos.length} tasks remaining`}
           </p>
         )}
       </div>
