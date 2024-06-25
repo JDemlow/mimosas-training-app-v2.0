@@ -97,16 +97,25 @@ const TrainingPage = () => {
             {trainingTasks.map((task, index) => (
               <li
                 key={index}
-                className="flex items-center rounded-md bg-gray-100 p-3"
+                className="flex items-center justify-between rounded-md bg-gray-100 p-3"
               >
-                <input
-                  type="checkbox"
-                  id={`task-${index}`}
-                  className="mr-2"
-                  checked={checklist[index]}
-                  onChange={() => handleCheckboxChange(index)}
-                />
-                <label htmlFor={`task-${index}`}>{task}</label>
+                <span
+                  className={`${
+                    checklist[index] ? "text-gray-500 line-through" : ""
+                  }`}
+                >
+                  {task}
+                </span>
+                <button
+                  className={`rounded px-4 py-2 font-bold text-white ${
+                    checklist[index]
+                      ? "bg-emerald-500"
+                      : "bg-[#f6b42c] hover:bg-[#fe642a]"
+                  }`}
+                  onClick={() => handleCheckboxChange(index)}
+                >
+                  Done
+                </button>
               </li>
             ))}
           </ul>
