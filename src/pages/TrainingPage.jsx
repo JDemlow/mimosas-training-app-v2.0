@@ -82,7 +82,7 @@ const TrainingPage = () => {
 
   return (
     <div className="App min-h-screen bg-gradient-to-r from-[#d69c28] to-[#fe642a]">
-      <div className="align-center flex justify-center">
+      <div className="align-center flex justify-center pt-4">
         <Employee
           name={employee.name}
           role={employee.role}
