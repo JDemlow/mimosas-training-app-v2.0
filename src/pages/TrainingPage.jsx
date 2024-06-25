@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { db } from "../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import Employee from "../compontents/Employee";
-
+import Employee from "../components/Employee";
 const trainingTasks = [
   "W4/I9 completed",
   "7shift upload",
@@ -82,7 +81,7 @@ const TrainingPage = () => {
 
   return (
     <div className="App min-h-screen bg-gradient-to-r from-[#d69c28] to-[#fe642a]">
-      <div className="align-center flex justify-center">
+      <div className="align-center flex justify-center pt-2">
         <Employee
           name={employee.name}
           role={employee.role}
@@ -92,7 +91,7 @@ const TrainingPage = () => {
         />
       </div>
       <div className="align-center flex justify-center">
-        <div className="rounded bg-white p-4 shadow-md">
+        <div className="m-4 rounded bg-white p-4 shadow-md">
           <h3 className="text-lg font-semibold">Training Tasks</h3>
           <ul>
             {trainingTasks.map((task, index) => (
