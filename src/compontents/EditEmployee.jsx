@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase";
@@ -15,6 +16,8 @@ function EditEmployee(props) {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const navigate = useNavigate();
 
   const deleteEmployee = (id) => {
     setEmployeeIdToDelete(id);
@@ -37,6 +40,10 @@ function EditEmployee(props) {
     setShowConfirmation(false);
   };
 
+  const viewTraining = () => {
+    navigate(`/training/${props.id}`);
+  };
+
   return (
     <>
       <button
@@ -45,11 +52,14 @@ function EditEmployee(props) {
       >
         Edit Employee
       </button>
-      <a className="mt-0 block" href={`/tasks?employee=${props.name}`}>
-        <button className="my-2 rounded-full border border-[#f6b42c] px-4 py-1 text-sm font-semibold text-[#d69c28] hover:border-transparent hover:bg-[#fe642a] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#f6b42c] focus:ring-offset-2">
+      <div className="mt-0 block">
+        <button
+          onClick={viewTraining}
+          className="my-2 rounded-full border border-[#f6b42c] px-4 py-1 text-sm font-semibold text-[#d69c28] hover:border-transparent hover:bg-[#fe642a] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#f6b42c] focus:ring-offset-2"
+        >
           View Training
         </button>
-      </a>
+      </div>
 
       <button onClick={() => deleteEmployee(props.id)}>
         {<FaRegTrashAlt />}

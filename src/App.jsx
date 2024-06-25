@@ -1,7 +1,7 @@
 import React from "react";
 import "../src/index.css";
 import Footer from "./compontents/Footer";
-import TodoApp from "./compontents/TodoApp";
+import TrainingPage from "./pages/TrainingPage";
 import Header from "./compontents/Header";
 import Employees from "./pages/Employees";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -42,12 +42,12 @@ function App() {
             }
           />
           <Route
-            path="/tasks"
+            path="/training/:employeeId"
             element={
               <>
                 <Header />
                 <ProtectedRoute>
-                  <TodoApp />
+                  <TrainingPage />
                 </ProtectedRoute>
                 <Footer />
               </>
