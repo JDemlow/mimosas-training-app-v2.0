@@ -1,3 +1,5 @@
+// src/components/Employee.jsx
+import React from "react";
 
 function Employee(props) {
   return (

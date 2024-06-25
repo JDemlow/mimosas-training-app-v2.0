@@ -1,23 +1,68 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
+import { doc, deleteDoc } from "firebase/firestore";
+import { db } from "../firebase";
+import { FaRegTrashAlt } from "react-icons/fa";
 
-function AddEmployee(props) {
-  const [name, setName] = useState("");
-  const [role, setRole] = useState("");
-  const [tier, setTier] = useState("");
+function EditEmployee(props) {
+  const [name, setName] = useState(props.name);
+  const [role, setRole] = useState(props.role);
+  const [tier, setTier] = useState(props.tier);
 
   const [show, setShow] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [employeeIdToDelete, setEmployeeIdToDelete] = useState(null);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const navigate = useNavigate();
+
+  const deleteEmployee = (id) => {
+    setEmployeeIdToDelete(id);
+    setShowConfirmation(true);
+  };
+
+  const confirmDelete = async () => {
+    if (employeeIdToDelete) {
+      await deleteDoc(doc(db, "employees", employeeIdToDelete));
+      const updatedEmployees = props.employees.filter(
+        (employee) => employee.id !== employeeIdToDelete
+      );
+      props.setEmployees(updatedEmployees); // Update the state in the parent component
+      setShowConfirmation(false);
+    }
+  };
+
+  const cancelDelete = () => {
+    setEmployeeIdToDelete(null);
+    setShowConfirmation(false);
+  };
+
+  const viewTraining = () => {
+    navigate(`/training/${props.id}`);
+  };
 
   return (
     <>
       <button
         onClick={handleShow}
-        className="m-2 mx-auto block rounded bg-[#f6b42c] px-4 py-2 font-bold text-white hover:bg-[#fe642a] focus:outline-none"
+        className="rounded-full border border-[#f6b42c] px-4 py-1 text-sm font-semibold text-[#d69c28] hover:border-transparent hover:bg-[#fe642a] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#f6b42c] focus:ring-offset-2"
       >
-        Add New Employee
+        Edit Employee
+      </button>
+      <div className="mt-0 block">
+        <button
+          onClick={viewTraining}
+          className="my-2 rounded-full border border-[#f6b42c] px-4 py-1 text-sm font-semibold text-[#d69c28] hover:border-transparent hover:bg-[#fe642a] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#f6b42c] focus:ring-offset-2"
+        >
+          View Training
+        </button>
+      </div>
+
+      <button onClick={() => deleteEmployee(props.id)}>
+        {<FaRegTrashAlt />}
       </button>
 
       <Modal
@@ -27,16 +72,14 @@ function AddEmployee(props) {
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Add Employee</Modal.Title>
+          <Modal.Title>Update Employee</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form
             onSubmit={(e) => {
+              handleClose();
               e.preventDefault();
-              setName("");
-              setRole("");
-              setTier("");
-              props.newEmployee(name, role, tier);
+              props.updateEmployee(props.id, { name, role, tier });
             }}
             id="editModal"
             className="w-full max-w-sm"
@@ -54,7 +97,6 @@ function AddEmployee(props) {
                 <input
                   className="w-full appearance-none rounded border-2 border-gray-200 bg-gray-200 px-3 py-2 leading-tight text-gray-700 focus:border-[#f6b42c] focus:bg-white focus:outline-none"
                   id="name"
-                  placeholder="John"
                   type="text"
                   value={name}
                   onChange={(e) => {
@@ -76,7 +118,6 @@ function AddEmployee(props) {
                 <input
                   className="w-full appearance-none rounded border-2 border-gray-200 bg-gray-200 px-3 py-2 leading-tight text-gray-700 focus:border-[#f6b42c] focus:bg-white focus:outline-none"
                   id="role"
-                  placeholder="Bartender"
                   type="text"
                   value={role}
                   onChange={(e) => {
@@ -98,7 +139,6 @@ function AddEmployee(props) {
                 <input
                   className="w-full appearance-none rounded border-2 border-gray-200 bg-gray-200 px-3 py-2 leading-tight text-gray-700 focus:border-[#f6b42c] focus:bg-white focus:outline-none"
                   id="tier"
-                  placeholder="Tier 3"
                   type="text"
                   value={tier}
                   onChange={(e) => {
@@ -118,10 +158,34 @@ function AddEmployee(props) {
           </button>
           <button
             className="rounded bg-[#f6b42c] px-4 py-2 font-bold text-white hover:bg-[#fe642a]"
-            onClick={handleClose}
             form="editModal"
           >
-            Add Employee
+            Update
+          </button>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        show={showConfirmation}
+        onHide={cancelDelete}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Employee</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete this employee?</Modal.Body>
+        <Modal.Footer>
+          <button
+            className="rounded bg-slate-400 px-4 py-2 font-bold text-white hover:bg-[#fe642a]"
+            onClick={cancelDelete}
+          >
+            Cancel
+          </button>
+          <button
+            className="rounded bg-[#f6b42c] px-4 py-2 font-bold text-white hover:bg-[#fe642a]"
+            onClick={confirmDelete}
+          >
+            Delete
           </button>
         </Modal.Footer>
       </Modal>
@@ -129,4 +193,4 @@ function AddEmployee(props) {
   );
 }
 
-export default AddEmployee;
+export default EditEmployee;

@@ -1,15 +1,15 @@
 import React from "react";
 import "../src/index.css";
-import Footer from "./compontents/Footer";
-import TodoApp from "./compontents/TodoApp";
-import Header from "./compontents/Header";
+import Footer from "./components/Footer";
+import TrainingPage from "./pages/TrainingPage";
+import Header from "./components/Header";
 import Employees from "./pages/Employees";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Signin from "./compontents/Signin";
-import Account from "./compontents/Account";
+import Signin from "./components/Signin";
+import Account from "./components/Account";
 import TrainingMaterials from "./pages/TrainingMaterials";
-import { AuthContextProvider } from "./compontents/context/AuthContext";
-import ProtectedRoute from "./compontents/ProtectedRoute";
+import { AuthContextProvider } from "./components/context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -42,12 +42,12 @@ function App() {
             }
           />
           <Route
-            path="/tasks"
+            path="/training/:employeeId"
             element={
               <>
                 <Header />
                 <ProtectedRoute>
-                  <TodoApp />
+                  <TrainingPage />
                 </ProtectedRoute>
                 <Footer />
               </>

@@ -1,58 +1,48 @@
 import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
-import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase";
-import { FaRegTrashAlt } from "react-icons/fa";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
-function EditEmployee(props) {
-  const [name, setName] = useState(props.name);
-  const [role, setRole] = useState(props.role);
-  const [tier, setTier] = useState(props.tier);
+const AddEmployee = ({ setEmployees }) => {
+  const [name, setName] = useState("");
+  const [role, setRole] = useState("");
+  const [tier, setTier] = useState("");
+  const trainingTasksLength = 36; // Number of training tasks
 
   const [show, setShow] = useState(false);
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [employeeIdToDelete, setEmployeeIdToDelete] = useState(null);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const deleteEmployee = (id) => {
-    setEmployeeIdToDelete(id);
-    setShowConfirmation(true);
-  };
+  const addEmployee = async (e) => {
+    e.preventDefault();
+    const newEmployee = {
+      name,
+      role,
+      tier,
+      img: "https://static.vecteezy.com/system/resources/previews/001/840/618/original/picture-profile-icon-male-icon-human-or-people-sign-and-symbol-free-vector.jpg", // Default image URL
+      createdAt: serverTimestamp(),
+      checklist: new Array(trainingTasksLength).fill(false),
+    };
 
-  const confirmDelete = async () => {
-    if (employeeIdToDelete) {
-      await deleteDoc(doc(db, "employees", employeeIdToDelete));
-      const updatedEmployees = props.employees.filter(
-        (employee) => employee.id !== employeeIdToDelete
-      );
-      props.setEmployees(updatedEmployees); // Update the state in the parent component
-      setShowConfirmation(false);
-    }
-  };
-
-  const cancelDelete = () => {
-    setEmployeeIdToDelete(null);
-    setShowConfirmation(false);
+    const docRef = await addDoc(collection(db, "employees"), newEmployee);
+    setEmployees((prevEmployees) => [
+      ...prevEmployees,
+      { id: docRef.id, ...newEmployee },
+    ]);
+    setName("");
+    setRole("");
+    setTier("");
+    handleClose();
   };
 
   return (
     <>
       <button
         onClick={handleShow}
-        className="rounded-full border border-[#f6b42c] px-4 py-1 text-sm font-semibold text-[#d69c28] hover:border-transparent hover:bg-[#fe642a] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#f6b42c] focus:ring-offset-2"
+        className="m-2 mx-auto block rounded bg-[#f6b42c] px-4 py-2 font-bold text-white hover:bg-[#fe642a] focus:outline-none"
       >
-        Edit Employee
-      </button>
-      <a className="mt-0 block" href={`/tasks?employee=${props.name}`}>
-        <button className="my-2 rounded-full border border-[#f6b42c] px-4 py-1 text-sm font-semibold text-[#d69c28] hover:border-transparent hover:bg-[#fe642a] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#f6b42c] focus:ring-offset-2">
-          View Training
-        </button>
-      </a>
-
-      <button onClick={() => deleteEmployee(props.id)}>
-        {<FaRegTrashAlt />}
+        Add New Employee
       </button>
 
       <Modal
@@ -62,16 +52,12 @@ function EditEmployee(props) {
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Update Employee</Modal.Title>
+          <Modal.Title>Add Employee</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form
-            onSubmit={(e) => {
-              handleClose();
-              e.preventDefault();
-              props.updateEmployee(props.id, { name, role, tier });
-            }}
-            id="editModal"
+            onSubmit={addEmployee}
+            id="addEmployeeForm"
             className="w-full max-w-sm"
           >
             <div className="mb-6 md:flex md:items-center">
@@ -87,11 +73,10 @@ function EditEmployee(props) {
                 <input
                   className="w-full appearance-none rounded border-2 border-gray-200 bg-gray-200 px-3 py-2 leading-tight text-gray-700 focus:border-[#f6b42c] focus:bg-white focus:outline-none"
                   id="name"
+                  placeholder="John"
                   type="text"
                   value={name}
-                  onChange={(e) => {
-                    setName(e.target.value);
-                  }}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </div>
             </div>
@@ -108,11 +93,10 @@ function EditEmployee(props) {
                 <input
                   className="w-full appearance-none rounded border-2 border-gray-200 bg-gray-200 px-3 py-2 leading-tight text-gray-700 focus:border-[#f6b42c] focus:bg-white focus:outline-none"
                   id="role"
+                  placeholder="Bartender"
                   type="text"
                   value={role}
-                  onChange={(e) => {
-                    setRole(e.target.value);
-                  }}
+                  onChange={(e) => setRole(e.target.value)}
                 />
               </div>
             </div>
@@ -129,11 +113,10 @@ function EditEmployee(props) {
                 <input
                   className="w-full appearance-none rounded border-2 border-gray-200 bg-gray-200 px-3 py-2 leading-tight text-gray-700 focus:border-[#f6b42c] focus:bg-white focus:outline-none"
                   id="tier"
+                  placeholder="Tier 3"
                   type="text"
                   value={tier}
-                  onChange={(e) => {
-                    setTier(e.target.value);
-                  }}
+                  onChange={(e) => setTier(e.target.value)}
                 />
               </div>
             </div>
@@ -148,39 +131,15 @@ function EditEmployee(props) {
           </button>
           <button
             className="rounded bg-[#f6b42c] px-4 py-2 font-bold text-white hover:bg-[#fe642a]"
-            form="editModal"
+            form="addEmployeeForm"
+            type="submit"
           >
-            Update
-          </button>
-        </Modal.Footer>
-      </Modal>
-      <Modal
-        show={showConfirmation}
-        onHide={cancelDelete}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Delete Employee</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Are you sure you want to delete this employee?</Modal.Body>
-        <Modal.Footer>
-          <button
-            className="rounded bg-slate-400 px-4 py-2 font-bold text-white hover:bg-[#fe642a]"
-            onClick={cancelDelete}
-          >
-            Cancel
-          </button>
-          <button
-            className="rounded bg-[#f6b42c] px-4 py-2 font-bold text-white hover:bg-[#fe642a]"
-            onClick={confirmDelete}
-          >
-            Delete
+            Add Employee
           </button>
         </Modal.Footer>
       </Modal>
     </>
   );
-}
+};
 
-export default EditEmployee;
+export default AddEmployee;
