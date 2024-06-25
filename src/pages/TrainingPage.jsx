@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { db } from "../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import Employee from "../components/Employee";
+
 const trainingTasks = [
   "W4/I9 completed",
   "7shift upload",
@@ -81,7 +82,7 @@ const TrainingPage = () => {
 
   return (
     <div className="App min-h-screen bg-gradient-to-r from-[#d69c28] to-[#fe642a]">
-      <div className="align-center flex justify-center pt-2">
+      <div className="align-center flex justify-center pt-4">
         <Employee
           name={employee.name}
           role={employee.role}
@@ -90,20 +91,31 @@ const TrainingPage = () => {
           editEmployee={null} // No edit button in this view
         />
       </div>
-      <div className="align-center flex justify-center">
-        <div className="m-4 rounded bg-white p-4 shadow-md">
-          <h3 className="text-lg font-semibold">Training Tasks</h3>
-          <ul>
+      <div className="flex w-full justify-center p-4">
+        <div className="w-full max-w-lg rounded-md bg-white p-4 shadow-lg">
+          <ul className="flex flex-col gap-3.5">
             {trainingTasks.map((task, index) => (
-              <li key={index} className="my-2 flex items-center">
-                <input
-                  type="checkbox"
-                  id={`task-${index}`}
-                  className="mr-2"
-                  checked={checklist[index]}
-                  onChange={() => handleCheckboxChange(index)}
-                />
-                <label htmlFor={`task-${index}`}>{task}</label>
+              <li
+                key={index}
+                className="flex items-center justify-between rounded-md bg-gray-100 p-3"
+              >
+                <span
+                  className={`${
+                    checklist[index] ? "text-gray-500 line-through" : ""
+                  }`}
+                >
+                  {task}
+                </span>
+                <button
+                  className={`rounded px-4 py-2 font-bold text-white ${
+                    checklist[index]
+                      ? "bg-emerald-500"
+                      : "bg-[#f6b42c] hover:bg-[#fe642a]"
+                  }`}
+                  onClick={() => handleCheckboxChange(index)}
+                >
+                  Done
+                </button>
               </li>
             ))}
           </ul>
