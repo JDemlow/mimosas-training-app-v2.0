@@ -3,6 +3,7 @@ import "../src/index.css";
 import Footer from "./components/Footer";
 import TrainingPage from "./pages/TrainingPage";
 import TierOnePage from "./pages/TierOnePage"; // Import the new page
+import TierTwoPage from "./pages/TierTwoPage"; // Import the new page
 import Header from "./components/Header";
 import Employees from "./pages/Employees";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -73,6 +74,18 @@ function App() {
                 <Header />
                 <ProtectedRoute>
                   <TierOnePage />
+                </ProtectedRoute>
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/tier2/:employeeId" // Add the route for the TierTwoPage
+            element={
+              <>
+                <Header />
+                <ProtectedRoute>
+                  <TierTwoPage />
                 </ProtectedRoute>
                 <Footer />
               </>

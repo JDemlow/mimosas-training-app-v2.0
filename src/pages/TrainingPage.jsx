@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
+import { useParams, useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import Employee from "../components/Employee";
@@ -48,7 +48,8 @@ const TrainingPage = () => {
   const { employeeId } = useParams();
   const [employee, setEmployee] = useState(null);
   const [checklist, setChecklist] = useState([]);
-  const navigate = useNavigate(); // Use navigate
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEmployee = async () => {
@@ -126,7 +127,7 @@ const TrainingPage = () => {
       <div className="flex justify-center p-3">
         <button
           className="rounded bg-[#f6b42c] px-4 py-2 font-bold text-white hover:bg-[#fe642a]"
-          onClick={() => navigate(`/tier1/${employeeId}`)} // Navigate to TierOnePage
+          onClick={() => navigate(`/tier1/${employeeId}`)} // Use navigate to go to Tier 1 page
         >
           Proceed to Tier 1
         </button>
