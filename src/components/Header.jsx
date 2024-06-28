@@ -40,6 +40,11 @@ export default function Header(props) {
       href: "/trainingmaterials",
       current: currentLink === "Training Materials",
     },
+    {
+      name: "Scheduling",
+      href: "/scheduling",
+      current: currentLink === "Scheduling",
+    },
   ];
 
   useEffect(() => {

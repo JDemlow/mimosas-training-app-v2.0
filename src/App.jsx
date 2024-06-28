@@ -15,6 +15,7 @@ import Account from "./components/Account";
 import TrainingMaterials from "./pages/TrainingMaterials";
 import { AuthContextProvider } from "./components/context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import SchedulingPage from "./pages/SchedulingPage";
 
 function App() {
   return (
@@ -125,6 +126,18 @@ function App() {
                 <Header />
                 <ProtectedRoute>
                   <TierFivePage />
+                </ProtectedRoute>
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/scheduling"
+            element={
+              <>
+                <Header />
+                <ProtectedRoute>
+                  <SchedulingPage />
                 </ProtectedRoute>
                 <Footer />
               </>
