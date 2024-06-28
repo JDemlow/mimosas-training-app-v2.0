@@ -71,16 +71,18 @@ export default function Header(props) {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="block h-8 w-auto lg:hidden"
+                  {/* <img
+                    className="block w-auto h-8 lg:hidden"
                     src="https://static.wixstatic.com/media/23327e_faf22b12eb4d45109ccd29d36e6eb979~mv2.png/v1/crop/x_7,y_0,w_477,h_308/fill/w_316,h_200,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Mimosas%201_webp.png"
                     alt="Mimosas Logo"
-                  />
-                  <img
-                    className="hidden h-8 w-auto lg:block"
-                    src="https://static.wixstatic.com/media/23327e_faf22b12eb4d45109ccd29d36e6eb979~mv2.png/v1/crop/x_7,y_0,w_477,h_308/fill/w_316,h_200,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Mimosas%201_webp.png"
-                    alt="Mimosas Logo"
-                  />
+                  /> */}
+                  <Link to="/employees">
+                    <img
+                      className="hidden h-8 w-auto lg:block"
+                      src="https://static.wixstatic.com/media/23327e_faf22b12eb4d45109ccd29d36e6eb979~mv2.png/v1/crop/x_7,y_0,w_477,h_308/fill/w_316,h_200,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Mimosas%201_webp.png"
+                      alt="Mimosas Logo"
+                    />
+                  </Link>
                 </div>
 
                 <div className="hidden sm:ml-6 sm:block">
