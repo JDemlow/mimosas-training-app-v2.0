@@ -1,54 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
+import { useParams } from "react-router-dom";
 import { db } from "../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import Employee from "../components/Employee";
 
-const trainingTasks = [
-  "W4/I9 completed",
-  "7shift upload",
-  "Toast upload",
-  "Rasi upload",
-  "Going over Menus",
-  "Handbook walkthrough and given",
-  "Explanation of tip teir",
-  "Tip criteria given",
-  "Tip assessment given",
-  "Tip quizzes given",
-  "Tour of dry storage",
-  "Tour of walkin",
-  "Tour of bar",
-  "Tour of chemical closet",
-  "Tour of MBP",
-  "Restaurant overview",
-  "Explanation of handhelds",
-  "Shadow of expo",
-  "Food presentations",
-  "Communication from expo",
-  "Learn table numbers",
-  "Manager sign off",
-  "General Manager sign off",
-  "More in-depth training of toast",
-  "Shadow trainer",
-  "Learning of table numbers",
-  "Trainer sign off",
-  "Training manager sign off",
-  "Menu training with GM",
-  "Shadow trainer",
-  "Trainer sign off",
-  "GM sign off",
-  "Bar training with bar manager",
-  "Espresso machine",
-  "Cocktails",
-  "All alcohol carried",
-  "Manager sign off",
+const tierOneTasks = [
+  "Completion of all departmental training & assessments",
+  "Active participation on departmental schedule – no less than 3 shifts per week",
 ];
 
-const TrainingPage = () => {
+const TierOnePage = () => {
   const { employeeId } = useParams();
   const [employee, setEmployee] = useState(null);
   const [checklist, setChecklist] = useState([]);
-  const navigate = useNavigate(); // Use navigate
 
   useEffect(() => {
     const fetchEmployee = async () => {
@@ -57,7 +21,7 @@ const TrainingPage = () => {
         const data = employeeDoc.data();
         setEmployee(data);
         setChecklist(
-          data.checklist || new Array(trainingTasks.length).fill(false)
+          data.tierOneChecklist || new Array(tierOneTasks.length).fill(false)
         );
       } else {
         console.log("No such document!");
@@ -75,7 +39,7 @@ const TrainingPage = () => {
     // Update Firestore
     const employeeDocRef = doc(db, "employees", employeeId);
     await updateDoc(employeeDocRef, {
-      checklist: updatedChecklist,
+      tierOneChecklist: updatedChecklist,
     });
   };
 
@@ -94,9 +58,9 @@ const TrainingPage = () => {
       </div>
       <div className="flex w-full justify-center p-4">
         <div className="w-full max-w-lg rounded-md bg-white p-4 shadow-lg">
-          <h2 className="text-center text-lg font-bold">Onboarding</h2>
+          <h2 className="text-center text-lg font-bold">Tier 1 Checklist</h2>
           <ul className="flex flex-col gap-3.5 p-4">
-            {trainingTasks.map((task, index) => (
+            {tierOneTasks.map((task, index) => (
               <li
                 key={index}
                 className="flex items-center justify-between rounded-md bg-gray-100 p-3"
@@ -123,16 +87,8 @@ const TrainingPage = () => {
           </ul>
         </div>
       </div>
-      <div className="flex justify-center p-3">
-        <button
-          className="rounded bg-[#f6b42c] px-4 py-2 font-bold text-white hover:bg-[#fe642a]"
-          onClick={() => navigate(`/tier1/${employeeId}`)} // Navigate to TierOnePage
-        >
-          Proceed to Tier 1
-        </button>
-      </div>
     </div>
   );
 };
 
-export default TrainingPage;
+export default TierOnePage;

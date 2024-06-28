@@ -2,6 +2,7 @@ import React from "react";
 import "../src/index.css";
 import Footer from "./components/Footer";
 import TrainingPage from "./pages/TrainingPage";
+import TierOnePage from "./pages/TierOnePage"; // Import the new page
 import Header from "./components/Header";
 import Employees from "./pages/Employees";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -42,7 +43,7 @@ function App() {
             }
           />
           <Route
-            path="/training/:employeeId"
+            path="/training/:employeeId" // Update the path to include :employeeId
             element={
               <>
                 <Header />
@@ -60,6 +61,18 @@ function App() {
                 <Header />
                 <ProtectedRoute>
                   <TrainingMaterials />
+                </ProtectedRoute>
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/tier1/:employeeId" // Add the route for the TierOnePage
+            element={
+              <>
+                <Header />
+                <ProtectedRoute>
+                  <TierOnePage />
                 </ProtectedRoute>
                 <Footer />
               </>
