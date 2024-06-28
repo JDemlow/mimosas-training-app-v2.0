@@ -91,7 +91,13 @@ const TierThreePage = () => {
           </ul>
         </div>
       </div>
-      <div className="flex justify-center p-3">
+      <div className="flex flex-col justify-center gap-3 p-3 sm:flex-row">
+        <button
+          className="rounded bg-gray-400 px-4 py-2 font-bold text-white hover:bg-gray-600"
+          onClick={() => navigate(-1)} // Go back to the previous page
+        >
+          Back
+        </button>
         <button
           className="rounded bg-[#f6b42c] px-4 py-2 font-bold text-white hover:bg-[#fe642a]"
           onClick={() => navigate(`/tier4/${employeeId}`)} // Navigate to TierFourPage

@@ -4,23 +4,15 @@ import { db } from "../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import Employee from "../components/Employee";
 
-const tierFourTasks = [
-  "Train the trainer session",
-  "Exceptional menu knowledge & guidance",
-  "Exemplary guest service",
-  "Guest compliments as part of your life",
-  "Picking up shifts",
-  "Unsupervised sidework excellence",
-  "Doing what’s right when no one is looking",
-  "Zero drama",
-  "Always prepared & positive",
-  "Reliable & helpful to all staff",
+const tierFiveTasks = [
+  "Keyholder/shift supervisor – helping to open/close restaurant & light administrative responsibilities",
 ];
 
-const TierFourPage = () => {
+const TierFivePage = () => {
   const { employeeId } = useParams();
   const [employee, setEmployee] = useState(null);
   const [checklist, setChecklist] = useState([]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,7 +22,7 @@ const TierFourPage = () => {
         const data = employeeDoc.data();
         setEmployee(data);
         setChecklist(
-          data.tierFourChecklist || new Array(tierFourTasks.length).fill(false)
+          data.tierFiveChecklist || new Array(tierFiveTasks.length).fill(false)
         );
       } else {
         console.log("No such document!");
@@ -48,7 +40,7 @@ const TierFourPage = () => {
     // Update Firestore
     const employeeDocRef = doc(db, "employees", employeeId);
     await updateDoc(employeeDocRef, {
-      tierFourChecklist: updatedChecklist,
+      tierFiveChecklist: updatedChecklist,
     });
   };
 
@@ -67,9 +59,9 @@ const TierFourPage = () => {
       </div>
       <div className="flex w-full justify-center p-4">
         <div className="w-full max-w-lg rounded-md bg-white p-4 shadow-lg">
-          <h2 className="text-center text-lg font-bold">Tier 4 Checklist</h2>
+          <h2 className="text-center text-lg font-bold">Tier 5 Checklist</h2>
           <ul className="flex flex-col gap-3.5 p-4">
-            {tierFourTasks.map((task, index) => (
+            {tierFiveTasks.map((task, index) => (
               <li
                 key={index}
                 className="flex items-center justify-between rounded-md bg-gray-100 p-3"
@@ -103,15 +95,9 @@ const TierFourPage = () => {
         >
           Back
         </button>
-        <button
-          className="rounded bg-[#f6b42c] px-4 py-2 font-bold text-white hover:bg-[#fe642a]"
-          onClick={() => navigate(`/tier5/${employeeId}`)} // Navigate to TierFivePage
-        >
-          Proceed to Tier 5
-        </button>
       </div>
     </div>
   );
 };
 
-export default TierFourPage;
+export default TierFivePage;
