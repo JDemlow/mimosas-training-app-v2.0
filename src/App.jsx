@@ -4,7 +4,8 @@ import Footer from "./components/Footer";
 import TrainingPage from "./pages/TrainingPage";
 import TierOnePage from "./pages/TierOnePage";
 import TierTwoPage from "./pages/TierTwoPage";
-import TierThreePage from "./pages/TierThreePage"; // Import the new page
+import TierThreePage from "./pages/TierThreePage";
+import TierFourPage from "./pages/TierFourPage";
 import Header from "./components/Header";
 import Employees from "./pages/Employees";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -99,6 +100,18 @@ function App() {
                 <Header />
                 <ProtectedRoute>
                   <TierThreePage />
+                </ProtectedRoute>
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/tier4/:employeeId"
+            element={
+              <>
+                <Header />
+                <ProtectedRoute>
+                  <TierFourPage />
                 </ProtectedRoute>
                 <Footer />
               </>

@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { db } from "../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import Employee from "../components/Employee";
 
-const tierThreeTasks = [
-  "Advanced menu knowledge (allergies, special requests, etc.) & guest guidance",
-  "Advanced backbar knowledge (cocktails & btb)",
-  "Cross-trained in multiple departments",
-  "Demonstrated willingness to help restaurant & staff in need (crossing departmental lines as necessary)",
+const tierFourTasks = [
+  "Train the trainer session",
+  "Exceptional menu knowledge & guidance",
+  "Exemplary guest service",
+  "Guest compliments as part of your life",
+  "Picking up shifts",
+  "Unsupervised sidework excellence",
+  "Doing what’s right when no one is looking",
+  "Zero drama",
+  "Always prepared & positive",
+  "Reliable & helpful to all staff",
 ];
 
-const TierThreePage = () => {
+const TierFourPage = () => {
   const { employeeId } = useParams();
   const [employee, setEmployee] = useState(null);
   const [checklist, setChecklist] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEmployee = async () => {
@@ -24,8 +29,7 @@ const TierThreePage = () => {
         const data = employeeDoc.data();
         setEmployee(data);
         setChecklist(
-          data.tierThreeChecklist ||
-            new Array(tierThreeTasks.length).fill(false)
+          data.tierFourChecklist || new Array(tierFourTasks.length).fill(false)
         );
       } else {
         console.log("No such document!");
@@ -43,7 +47,7 @@ const TierThreePage = () => {
     // Update Firestore
     const employeeDocRef = doc(db, "employees", employeeId);
     await updateDoc(employeeDocRef, {
-      tierThreeChecklist: updatedChecklist,
+      tierFourChecklist: updatedChecklist,
     });
   };
 
@@ -62,9 +66,9 @@ const TierThreePage = () => {
       </div>
       <div className="flex w-full justify-center p-4">
         <div className="w-full max-w-lg rounded-md bg-white p-4 shadow-lg">
-          <h2 className="text-center text-lg font-bold">Tier 3 Checklist</h2>
+          <h2 className="text-center text-lg font-bold">Tier 4 Checklist</h2>
           <ul className="flex flex-col gap-3.5 p-4">
-            {tierThreeTasks.map((task, index) => (
+            {tierFourTasks.map((task, index) => (
               <li
                 key={index}
                 className="flex items-center justify-between rounded-md bg-gray-100 p-3"
@@ -91,16 +95,8 @@ const TierThreePage = () => {
           </ul>
         </div>
       </div>
-      <div className="flex justify-center p-3">
-        <button
-          className="rounded bg-[#f6b42c] px-4 py-2 font-bold text-white hover:bg-[#fe642a]"
-          onClick={() => navigate(`/tier4/${employeeId}`)} // Navigate to TierFourPage
-        >
-          Proceed to Tier 4
-        </button>
-      </div>
     </div>
   );
 };
 
-export default TierThreePage;
+export default TierFourPage;
