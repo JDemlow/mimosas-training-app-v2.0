@@ -93,7 +93,7 @@ const TrainingPage = () => {
       </div>
       <div className="flex w-full justify-center p-4">
         <div className="w-full max-w-lg rounded-md bg-white p-4 shadow-lg">
-          <ul className="flex flex-col gap-3.5">
+          <ul className="flex flex-col gap-3.5 p-4">
             {trainingTasks.map((task, index) => (
               <li
                 key={index}
@@ -102,7 +102,7 @@ const TrainingPage = () => {
                 <span
                   className={`${
                     checklist[index] ? "text-gray-500 line-through" : ""
-                  }`}
+                  } text-xs md:text-base`}
                 >
                   {task}
                 </span>
