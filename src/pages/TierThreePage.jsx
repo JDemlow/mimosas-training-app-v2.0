@@ -1,27 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { db } from "../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import Employee from "../components/Employee";
 
-const tierTwoTasks = [
-  "Embracing & embodying all standards and philosophies",
-  "Demonstrated comprehension & execution of all service basics",
-  "Coursing & presets",
-  "Working knowledge of full menu, wines, BTG, well liquors, & beers (serve/bar)",
-  "Proficiency on POS",
-  "Reliability, timeliness, & consistency",
-  "Comprehension & execution of departmental priorities",
-  "Proper table maintenance, position numbers",
-  "Wine & champagne service & presentation",
-  "Pride in grooming and uniforms",
+const tierThreeTasks = [
+  "Advanced menu knowledge (allergies, special requests, etc.) & guest guidance",
+  "Advanced backbar knowledge (cocktails & btb)",
+  "Cross-trained in multiple departments",
+  "Demonstrated willingness to help restaurant & staff in need (crossing departmental lines as necessary)",
 ];
 
-const TierTwoPage = () => {
+const TierThreePage = () => {
   const { employeeId } = useParams();
   const [employee, setEmployee] = useState(null);
   const [checklist, setChecklist] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEmployee = async () => {
@@ -30,7 +23,8 @@ const TierTwoPage = () => {
         const data = employeeDoc.data();
         setEmployee(data);
         setChecklist(
-          data.tierTwoChecklist || new Array(tierTwoTasks.length).fill(false)
+          data.tierThreeChecklist ||
+            new Array(tierThreeTasks.length).fill(false)
         );
       } else {
         console.log("No such document!");
@@ -48,7 +42,7 @@ const TierTwoPage = () => {
     // Update Firestore
     const employeeDocRef = doc(db, "employees", employeeId);
     await updateDoc(employeeDocRef, {
-      tierTwoChecklist: updatedChecklist,
+      tierThreeChecklist: updatedChecklist,
     });
   };
 
@@ -67,9 +61,9 @@ const TierTwoPage = () => {
       </div>
       <div className="flex w-full justify-center p-4">
         <div className="w-full max-w-lg rounded-md bg-white p-4 shadow-lg">
-          <h2 className="text-center text-lg font-bold">Tier 2 Checklist</h2>
+          <h2 className="text-center text-lg font-bold">Tier 3 Checklist</h2>
           <ul className="flex flex-col gap-3.5 p-4">
-            {tierTwoTasks.map((task, index) => (
+            {tierThreeTasks.map((task, index) => (
               <li
                 key={index}
                 className="flex items-center justify-between rounded-md bg-gray-100 p-3"
@@ -96,16 +90,8 @@ const TierTwoPage = () => {
           </ul>
         </div>
       </div>
-      <div className="flex justify-center p-3">
-        <button
-          className="rounded bg-[#f6b42c] px-4 py-2 font-bold text-white hover:bg-[#fe642a]"
-          onClick={() => navigate(`/tier3/${employeeId}`)} // Navigate to TierThreePage
-        >
-          Proceed to Tier 3
-        </button>
-      </div>
     </div>
   );
 };
 
-export default TierTwoPage;
+export default TierThreePage;
