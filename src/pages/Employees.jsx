@@ -2,6 +2,7 @@ import Employee from "../components/Employee";
 import { useState, useEffect } from "react";
 import AddEmployee from "../components/AddEmployee";
 import EditEmployee from "../components/EditEmployee";
+import LoadingSpinner from "../components/LoadingSpinner";
 import { db } from "../firebase";
 import {
   collection,
@@ -37,6 +38,8 @@ function Employees() {
       })
     );
   };
+
+  if (!employees) return <LoadingSpinner />;
 
   return (
     <div className="App min-h-screen bg-gradient-to-r from-[#d69c28] to-[#fe642a]">

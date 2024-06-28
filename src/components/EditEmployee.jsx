@@ -4,6 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { FaRegTrashAlt } from "react-icons/fa";
+import LoadingSpinner from "./LoadingSpinner";
 
 function EditEmployee(props) {
   const [name, setName] = useState(props.name);

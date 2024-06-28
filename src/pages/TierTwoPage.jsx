@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import Employee from "../components/Employee";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const tierTwoTasks = [
   "Embracing & embodying all standards and philosophies",
@@ -52,7 +53,7 @@ const TierTwoPage = () => {
     });
   };
 
-  if (!employee) return <div>Loading...</div>;
+  if (!employee) return <LoadingSpinner />;
 
   return (
     <div className="App min-h-screen bg-gradient-to-r from-[#d69c28] to-[#fe642a]">
