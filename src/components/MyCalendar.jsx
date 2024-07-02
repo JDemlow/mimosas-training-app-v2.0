@@ -9,10 +9,13 @@ import {
   addDoc,
   updateDoc,
   deleteDoc,
-  doc,
+  query,
+  where,
+  getDocs as getDocsQuery,
 } from "firebase/firestore";
 import { Modal, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { v4 as uuidv4 } from "uuid";
 
 const localizer = momentLocalizer(moment);
 
@@ -75,16 +78,50 @@ const MyCalendar = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    const event = { ...newEvent, repeat: newEvent.repeat === "Yes" };
+    const recurrenceId = uuidv4();
+    const event = {
+      ...newEvent,
+      repeat: newEvent.repeat === "Yes",
+      recurrenceId,
+    };
     const docRef = await addDoc(collection(db, "events"), event);
-    setEvents((prev) => [...prev, { ...event, id: docRef.id }]);
+    const newEvents = [{ ...event, id: docRef.id }];
+
+    if (newEvent.repeat === "Yes") {
+      for (let i = 1; i <= 52; i++) {
+        const nextEvent = {
+          ...event,
+          start: new Date(
+            new Date(event.start).setDate(event.start.getDate() + i * 7)
+          ),
+          end: new Date(
+            new Date(event.end).setDate(event.end.getDate() + i * 7)
+          ),
+          recurrenceId,
+        };
+        const nextDocRef = await addDoc(collection(db, "events"), nextEvent);
+        newEvents.push({ ...nextEvent, id: nextDocRef.id });
+      }
+    }
+
+    setEvents((prev) => [...prev, ...newEvents]);
     setShowAddModal(false);
   };
 
   const handleDelete = async () => {
     if (selectedEvent) {
-      await deleteDoc(doc(db, "events", selectedEvent.id));
-      setEvents((prev) => prev.filter((e) => e.id !== selectedEvent.id));
+      const q = query(
+        collection(db, "events"),
+        where("recurrenceId", "==", selectedEvent.recurrenceId)
+      );
+      const querySnapshot = await getDocsQuery(q);
+      querySnapshot.forEach(async (doc) => {
+        await deleteDoc(doc.ref);
+      });
+
+      setEvents((prev) =>
+        prev.filter((e) => e.recurrenceId !== selectedEvent.recurrenceId)
+      );
       setShowEventModal(false);
     }
   };
