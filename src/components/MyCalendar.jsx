@@ -9,6 +9,7 @@ import {
   addDoc,
   updateDoc,
   deleteDoc,
+  doc,
   query,
   where,
   getDocs as getDocsQuery,
@@ -68,6 +69,7 @@ const MyCalendar = () => {
       start: event.start,
       end: event.end,
       repeat: event.repeat ? "Yes" : "No",
+      recurrenceId: event.recurrenceId,
     });
     setShowEventModal(true);
   };
@@ -133,7 +135,11 @@ const MyCalendar = () => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    const updatedEvent = { ...editEvent, repeat: editEvent.repeat === "Yes" };
+    const updatedEvent = {
+      ...editEvent,
+      repeat: editEvent.repeat === "Yes",
+      recurrenceId: selectedEvent.recurrenceId,
+    };
     await updateDoc(doc(db, "events", selectedEvent.id), updatedEvent);
     setEvents((prev) =>
       prev.map((e) =>
