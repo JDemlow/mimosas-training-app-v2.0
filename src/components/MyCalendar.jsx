@@ -3,21 +3,28 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { db } from "../firebase";
-import { collection, getDocs, addDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import { Modal, Button } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css"; // Ensure this is imported
+import "bootstrap/dist/css/bootstrap.min.css";
 
-// Setup the localizer by providing the moment (or globalize) Object
 const localizer = momentLocalizer(moment);
 
 const MyCalendar = () => {
   const [events, setEvents] = useState([]);
-  const [show, setShow] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEventModal, setShowEventModal] = useState(false);
   const [newEvent, setNewEvent] = useState({
     title: "",
     start: new Date(),
     end: new Date(),
   });
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -36,17 +43,31 @@ const MyCalendar = () => {
 
   const handleSelectSlot = ({ start, end }) => {
     setNewEvent({ ...newEvent, start, end });
-    setShow(true);
+    setShowAddModal(true);
   };
 
-  const handleClose = () => setShow(false);
+  const handleSelectEvent = (event) => {
+    setSelectedEvent(event);
+    setShowEventModal(true);
+  };
+
+  const handleCloseAddModal = () => setShowAddModal(false);
+  const handleCloseEventModal = () => setShowEventModal(false);
 
   const handleSave = async (e) => {
     e.preventDefault();
     const event = { ...newEvent, allDay: false };
-    await addDoc(collection(db, "events"), event);
-    setEvents((prev) => [...prev, event]);
-    setShow(false);
+    const docRef = await addDoc(collection(db, "events"), event);
+    setEvents((prev) => [...prev, { ...event, id: docRef.id }]);
+    setShowAddModal(false);
+  };
+
+  const handleDelete = async () => {
+    if (selectedEvent) {
+      await deleteDoc(doc(db, "events", selectedEvent.id));
+      setEvents((prev) => prev.filter((e) => e.id !== selectedEvent.id));
+      setShowEventModal(false);
+    }
   };
 
   return (
@@ -59,11 +80,13 @@ const MyCalendar = () => {
         style={{ height: 500 }}
         selectable
         onSelectSlot={handleSelectSlot}
+        onSelectEvent={handleSelectEvent}
       />
 
+      {/* Add Event Modal */}
       <Modal
-        show={show}
-        onHide={handleClose}
+        show={showAddModal}
+        onHide={handleCloseAddModal}
         backdrop="static"
         keyboard={false}
       >
@@ -79,7 +102,7 @@ const MyCalendar = () => {
             <div className="mb-6 md:flex md:items-center">
               <div className="md:w-1/3">
                 <label
-                  className="block pr-4 mb-1 font-bold text-gray-500 md:mb-0 md:text-right"
+                  className="mb-1 block pr-4 font-bold text-gray-500 md:mb-0 md:text-right"
                   htmlFor="title"
                 >
                   Event Title
@@ -104,7 +127,7 @@ const MyCalendar = () => {
         <Modal.Footer>
           <button
             className="rounded bg-slate-400 px-4 py-2 font-bold text-white hover:bg-[#fe642a]"
-            onClick={handleClose}
+            onClick={handleCloseAddModal}
           >
             Close
           </button>
@@ -114,6 +137,45 @@ const MyCalendar = () => {
             type="submit"
           >
             Save Event
+          </button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Event Details Modal */}
+      <Modal
+        show={showEventModal}
+        onHide={handleCloseEventModal}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Event Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedEvent && (
+            <div>
+              <h5>{selectedEvent.title}</h5>
+              <p>
+                <strong>Start:</strong> {selectedEvent.start.toLocaleString()}
+              </p>
+              <p>
+                <strong>End:</strong> {selectedEvent.end.toLocaleString()}
+              </p>
+            </div>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <button
+            className="rounded bg-slate-400 px-4 py-2 font-bold text-white hover:bg-[#fe642a]"
+            onClick={handleCloseEventModal}
+          >
+            Close
+          </button>
+          <button
+            className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
+            onClick={handleDelete}
+          >
+            Delete Event
           </button>
         </Modal.Footer>
       </Modal>
