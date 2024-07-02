@@ -150,7 +150,7 @@ const MyCalendar = () => {
   };
 
   return (
-    <div style={{ height: "500pt" }}>
+    <div style={{ height: "500pt" }} className="relative">
       <Calendar
         localizer={localizer}
         events={events}
@@ -524,6 +524,16 @@ const MyCalendar = () => {
           </button>
         </Modal.Footer>
       </Modal>
+
+      {/* Add Event Button for Mobile */}
+      <div className="absolute bottom-4 flex w-full justify-center pb-8 sm:hidden">
+        <button
+          className="rounded bg-[#f6b42c] px-4 py-2 font-bold text-white hover:bg-[#fe642a]"
+          onClick={() => setShowAddModal(true)}
+        >
+          Add Event
+        </button>
+      </div>
     </div>
   );
 };
