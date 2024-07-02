@@ -7,6 +7,7 @@ import {
   collection,
   getDocs,
   addDoc,
+  updateDoc,
   deleteDoc,
   doc,
 } from "firebase/firestore";
@@ -19,12 +20,22 @@ const MyCalendar = () => {
   const [events, setEvents] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEventModal, setShowEventModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [newEvent, setNewEvent] = useState({
     title: "",
+    description: "",
     start: new Date(),
     end: new Date(),
+    repeat: "No",
   });
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [editEvent, setEditEvent] = useState({
+    title: "",
+    description: "",
+    start: new Date(),
+    end: new Date(),
+    repeat: "No",
+  });
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -48,15 +59,23 @@ const MyCalendar = () => {
 
   const handleSelectEvent = (event) => {
     setSelectedEvent(event);
+    setEditEvent({
+      title: event.title,
+      description: event.description,
+      start: event.start,
+      end: event.end,
+      repeat: event.repeat ? "Yes" : "No",
+    });
     setShowEventModal(true);
   };
 
   const handleCloseAddModal = () => setShowAddModal(false);
   const handleCloseEventModal = () => setShowEventModal(false);
+  const handleCloseEditModal = () => setShowEditModal(false);
 
   const handleSave = async (e) => {
     e.preventDefault();
-    const event = { ...newEvent, allDay: false };
+    const event = { ...newEvent, repeat: newEvent.repeat === "Yes" };
     const docRef = await addDoc(collection(db, "events"), event);
     setEvents((prev) => [...prev, { ...event, id: docRef.id }]);
     setShowAddModal(false);
@@ -68,6 +87,23 @@ const MyCalendar = () => {
       setEvents((prev) => prev.filter((e) => e.id !== selectedEvent.id));
       setShowEventModal(false);
     }
+  };
+
+  const handleEdit = () => {
+    setShowEventModal(false);
+    setShowEditModal(true);
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    const updatedEvent = { ...editEvent, repeat: editEvent.repeat === "Yes" };
+    await updateDoc(doc(db, "events", selectedEvent.id), updatedEvent);
+    setEvents((prev) =>
+      prev.map((e) =>
+        e.id === selectedEvent.id ? { ...updatedEvent, id: e.id } : e
+      )
+    );
+    setShowEditModal(false);
   };
 
   return (
@@ -122,6 +158,103 @@ const MyCalendar = () => {
                 />
               </div>
             </div>
+
+            <div className="mb-6 md:flex md:items-center">
+              <div className="md:w-1/3">
+                <label
+                  className="mb-1 block pr-4 font-bold text-gray-500 md:mb-0 md:text-right"
+                  htmlFor="description"
+                >
+                  Description
+                </label>
+              </div>
+              <div className="md:w-2/3">
+                <textarea
+                  className="w-full appearance-none rounded border-2 border-gray-200 bg-gray-200 px-3 py-2 leading-tight text-gray-700 focus:border-[#f6b42c] focus:bg-white focus:outline-none"
+                  id="description"
+                  value={newEvent.description}
+                  onChange={(e) =>
+                    setNewEvent({ ...newEvent, description: e.target.value })
+                  }
+                  placeholder="Enter event description"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="mb-6 md:flex md:items-center">
+              <div className="md:w-1/3">
+                <label
+                  className="mb-1 block pr-4 font-bold text-gray-500 md:mb-0 md:text-right"
+                  htmlFor="start"
+                >
+                  Start Time
+                </label>
+              </div>
+              <div className="md:w-2/3">
+                <input
+                  className="w-full appearance-none rounded border-2 border-gray-200 bg-gray-200 px-3 py-2 leading-tight text-gray-700 focus:border-[#f6b42c] focus:bg-white focus:outline-none"
+                  id="start"
+                  type="datetime-local"
+                  value={moment(newEvent.start).format("YYYY-MM-DDTHH:mm")}
+                  onChange={(e) =>
+                    setNewEvent({
+                      ...newEvent,
+                      start: new Date(e.target.value),
+                    })
+                  }
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="mb-6 md:flex md:items-center">
+              <div className="md:w-1/3">
+                <label
+                  className="mb-1 block pr-4 font-bold text-gray-500 md:mb-0 md:text-right"
+                  htmlFor="end"
+                >
+                  End Time
+                </label>
+              </div>
+              <div className="md:w-2/3">
+                <input
+                  className="w-full appearance-none rounded border-2 border-gray-200 bg-gray-200 px-3 py-2 leading-tight text-gray-700 focus:border-[#f6b42c] focus:bg-white focus:outline-none"
+                  id="end"
+                  type="datetime-local"
+                  value={moment(newEvent.end).format("YYYY-MM-DDTHH:mm")}
+                  onChange={(e) =>
+                    setNewEvent({ ...newEvent, end: new Date(e.target.value) })
+                  }
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="mb-6 md:flex md:items-center">
+              <div className="md:w-1/3">
+                <label
+                  className="mb-1 block pr-4 font-bold text-gray-500 md:mb-0 md:text-right"
+                  htmlFor="repeat"
+                >
+                  Repeat Weekly
+                </label>
+              </div>
+              <div className="md:w-2/3">
+                <select
+                  className="w-full appearance-none rounded border-2 border-gray-200 bg-gray-200 px-3 py-2 leading-tight text-gray-700 focus:border-[#f6b42c] focus:bg-white focus:outline-none"
+                  id="repeat"
+                  value={newEvent.repeat}
+                  onChange={(e) =>
+                    setNewEvent({ ...newEvent, repeat: e.target.value })
+                  }
+                  required
+                >
+                  <option value="No">No</option>
+                  <option value="Yes">Yes</option>
+                </select>
+              </div>
+            </div>
           </form>
         </Modal.Body>
         <Modal.Footer>
@@ -155,11 +288,16 @@ const MyCalendar = () => {
           {selectedEvent && (
             <div>
               <h5>{selectedEvent.title}</h5>
+              <p>{selectedEvent.description}</p>
               <p>
                 <strong>Start:</strong> {selectedEvent.start.toLocaleString()}
               </p>
               <p>
                 <strong>End:</strong> {selectedEvent.end.toLocaleString()}
+              </p>
+              <p>
+                <strong>Repeat Weekly:</strong>{" "}
+                {selectedEvent.repeat ? "Yes" : "No"}
               </p>
             </div>
           )}
@@ -172,10 +310,174 @@ const MyCalendar = () => {
             Close
           </button>
           <button
+            className="rounded bg-yellow-500 px-4 py-2 font-bold text-white hover:bg-yellow-700"
+            onClick={handleEdit}
+          >
+            Edit Event
+          </button>
+          <button
             className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
             onClick={handleDelete}
           >
             Delete Event
+          </button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Edit Event Modal */}
+      <Modal
+        show={showEditModal}
+        onHide={handleCloseEditModal}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Event</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form
+            onSubmit={handleUpdate}
+            id="editEventForm"
+            className="w-full max-w-sm"
+          >
+            <div className="mb-6 md:flex md:items-center">
+              <div className="md:w-1/3">
+                <label
+                  className="mb-1 block pr-4 font-bold text-gray-500 md:mb-0 md:text-right"
+                  htmlFor="editTitle"
+                >
+                  Event Title
+                </label>
+              </div>
+              <div className="md:w-2/3">
+                <input
+                  className="w-full appearance-none rounded border-2 border-gray-200 bg-gray-200 px-3 py-2 leading-tight text-gray-700 focus:border-[#f6b42c] focus:bg-white focus:outline-none"
+                  id="editTitle"
+                  type="text"
+                  value={editEvent.title}
+                  onChange={(e) =>
+                    setEditEvent({ ...editEvent, title: e.target.value })
+                  }
+                  placeholder="Enter event title"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="mb-6 md:flex md:items-center">
+              <div className="md:w-1/3">
+                <label
+                  className="mb-1 block pr-4 font-bold text-gray-500 md:mb-0 md:text-right"
+                  htmlFor="editDescription"
+                >
+                  Description
+                </label>
+              </div>
+              <div className="md:w-2/3">
+                <textarea
+                  className="w-full appearance-none rounded border-2 border-gray-200 bg-gray-200 px-3 py-2 leading-tight text-gray-700 focus:border-[#f6b42c] focus:bg-white focus:outline-none"
+                  id="editDescription"
+                  value={editEvent.description}
+                  onChange={(e) =>
+                    setEditEvent({ ...editEvent, description: e.target.value })
+                  }
+                  placeholder="Enter event description"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="mb-6 md:flex md:items-center">
+              <div className="md:w-1/3">
+                <label
+                  className="mb-1 block pr-4 font-bold text-gray-500 md:mb-0 md:text-right"
+                  htmlFor="editStart"
+                >
+                  Start Time
+                </label>
+              </div>
+              <div className="md:w-2/3">
+                <input
+                  className="w-full appearance-none rounded border-2 border-gray-200 bg-gray-200 px-3 py-2 leading-tight text-gray-700 focus:border-[#f6b42c] focus:bg-white focus:outline-none"
+                  id="editStart"
+                  type="datetime-local"
+                  value={moment(editEvent.start).format("YYYY-MM-DDTHH:mm")}
+                  onChange={(e) =>
+                    setEditEvent({
+                      ...editEvent,
+                      start: new Date(e.target.value),
+                    })
+                  }
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="mb-6 md:flex md:items-center">
+              <div className="md:w-1/3">
+                <label
+                  className="mb-1 block pr-4 font-bold text-gray-500 md:mb-0 md:text-right"
+                  htmlFor="editEnd"
+                >
+                  End Time
+                </label>
+              </div>
+              <div className="md:w-2/3">
+                <input
+                  className="w-full appearance-none rounded border-2 border-gray-200 bg-gray-200 px-3 py-2 leading-tight text-gray-700 focus:border-[#f6b42c] focus:bg-white focus:outline-none"
+                  id="editEnd"
+                  type="datetime-local"
+                  value={moment(editEvent.end).format("YYYY-MM-DDTHH:mm")}
+                  onChange={(e) =>
+                    setEditEvent({
+                      ...editEvent,
+                      end: new Date(e.target.value),
+                    })
+                  }
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="mb-6 md:flex md:items-center">
+              <div className="md:w-1/3">
+                <label
+                  className="mb-1 block pr-4 font-bold text-gray-500 md:mb-0 md:text-right"
+                  htmlFor="editRepeat"
+                >
+                  Repeat Weekly
+                </label>
+              </div>
+              <div className="md:w-2/3">
+                <select
+                  className="w-full appearance-none rounded border-2 border-gray-200 bg-gray-200 px-3 py-2 leading-tight text-gray-700 focus:border-[#f6b42c] focus:bg-white focus:outline-none"
+                  id="editRepeat"
+                  value={editEvent.repeat}
+                  onChange={(e) =>
+                    setEditEvent({ ...editEvent, repeat: e.target.value })
+                  }
+                  required
+                >
+                  <option value="No">No</option>
+                  <option value="Yes">Yes</option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <button
+            className="rounded bg-slate-400 px-4 py-2 font-bold text-white hover:bg-[#fe642a]"
+            onClick={handleCloseEditModal}
+          >
+            Close
+          </button>
+          <button
+            className="rounded bg-[#f6b42c] px-4 py-2 font-bold text-white hover:bg-[#fe642a]"
+            form="editEventForm"
+            type="submit"
+          >
+            Update Event
           </button>
         </Modal.Footer>
       </Modal>
